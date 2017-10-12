@@ -29,8 +29,8 @@ include 'header.php';
 				if (isset($_SESSION["logout"])) {
 					$logout = $_SESSION["logout"];
 					?>
-					<div class="section green lighten-4">
-						<p><?php echo $logout; unset($_SESSION["logout"]);?></p>
+					<div class="section green lighten-3">
+						<p><?php echo $logout; unset($_SESSION["logout"]); ?></p>
 					</div>
 					<?php
 				}
@@ -38,7 +38,7 @@ include 'header.php';
 					$erro = $_SESSION["errorLogin"];
 					?>
 					<div class="section red lighten-4">
-						<p><?php echo $erro; unset($_SESSION["errorLogin"]);?></p>
+						<p><?php echo $erro; unset($_SESSION["errorLogin"]); ?></p>
 					</div>
 					<?php
 				}

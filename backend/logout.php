@@ -3,7 +3,7 @@
 
   unset($_SESSION["id"]);
   unset($_SESSION["name"]);
-  unset($_SESSION["password"]);
+  unset($_SESSION["email"]);
 
   session_destroy();
   session_start();

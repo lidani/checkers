@@ -7,7 +7,7 @@
   $cpassword = md5($_POST["cpassword"]);
 
   if ($password != $cpassword) {
-    $_SESSION["error"] = "Senhas diferentes";
+    $_SESSION["errorCadastro"] = "Senhas diferentes";
     header("Location: ../frontend/cadastro.php");
   } else {
     $query = "INSERT INTO `users`(id, name, email, password) ".
