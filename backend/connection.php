@@ -21,10 +21,12 @@ $jogos = "CREATE TABLE IF NOT EXISTS `jogos` (
   ) charset=utf8;";
 
 $user = "CREATE TABLE IF NOT EXISTS `users`(
-  id int AUTO_INCREMENT,
+  id bigint AUTO_INCREMENT,
   name varchar(255),
   email varchar(255),
   password varchar(255),
+  victories bigint default 0,
+  empates int default 0,
   PRIMARY KEY (id)
 ) charset=utf8;";
 if (!$mysqli->query($jogos)) {

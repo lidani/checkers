@@ -26,4 +26,4 @@
     </div>
   </div>
 
-<?php include './footer.php' ?>
+<?php include './footerGame.php' ?>

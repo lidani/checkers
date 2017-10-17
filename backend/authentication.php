@@ -15,6 +15,8 @@ if (count($registros) > 0) {
   $_SESSION['id'] = $registros[0][0];
   $_SESSION['name'] = $registros[0][1];
   $_SESSION['email'] = $registros[0][2];
+  $_SESSION['victories'] = $registros[0][4];
+  $_SESSION['empates'] = $registros[0][5];
   header("Location: ../frontend/index.php");
 } else {
   $_SESSION["errorLogin"] = "E-mail ou senha inválida";
