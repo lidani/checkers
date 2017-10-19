@@ -1,10 +1,11 @@
 <?php include './headerGame.php' ?>
 
-  <h5 class="blue-text" v-if="jogador == 'img/img2.png' &amp;&amp; !won()">Vez do jogador: Azul, Clicks: {{clicks}}</h5>
-  <h5 class="red-text" v-else-if="jogador == 'img/img.png' &amp;&amp; !won()">Vez do jogador: Vermelho, Clicks: {{clicks}}</h5>
+  <h5 class="blue-text" v-if="jogador == 'img/img2.png' &amp;&amp; !won()">Vez do jogador: Azul</h5>
+  <h5 class="red-text" v-else-if="jogador == 'img/img.png' &amp;&amp; !won()">Vez do jogador: Vermelho</h5>
   <div v-if="!won()" class="score">
-    <span class="red-text">{{pontosJogador1}}</span> X <span class="blue-text">{{pontosJogador2}}</span>
+    <span class="red-text">{{pontosJogador1}}</span> {{clicks}} X <span class="blue-text">{{pontosJogador2}}</span>
   </div>
+
   <div v-else class="score">
     <h5 v-if="vencedor == 1" class="red-text">Jogador Vermelho Venceu!</h5>
     <h5 v-if="vencedor == 2" class="blue-text">Jogador Azul Venceu!</h5>

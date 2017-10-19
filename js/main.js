@@ -17,52 +17,11 @@ var Main = new Vue({
     jg2d: 'img/dama2.png',
   },
   methods: {
-    geraTab: function () {
-      for (var i = 0; i < this.wXh; i++) {
-        var list = [];
-        for (var j = 0; j < this.wXh; j++) {
-          list.push("img/fundo.png");
-        }
-        this.campos.push(list);
-      }
-      for (var i = 0; i < this.campos.length; i++) {
-        for (var j = 0; j < this.campos[i].length; j++) {
-          if (this.campos.length == 10) {
-            if (i == this.campos.length -4) {
-              if (j % 2 != 0) {
-                this.campos[i][j] = this.jg1;
-              }
-            }
-            if (i == 3) {
-              if (j % 2 == 0) {
-                this.campos[i][j] = this.jg2;
-              }
-            }
-          }
-          if (i == 1) {
-            if (j % 2 == 0) {
-              this.campos[i][j] = this.jg2;
-            }
-          } else if (i == 0 || i == 2) {
-            if (j % 2 != 0){
-              this.campos[i][j] = this.jg2;
-            }
-          } else if (i == this.campos.length -2) {
-            if (j % 2 != 0) {
-              this.campos[i][j] = this.jg1;
-            }
-          } else if (i == this.campos.length -1 || i == this.campos.length -3) {
-            if (j % 2 == 0) {
-              this.campos[i][j] = this.jg1;
-            }
-          }
-        }
-      }
-    },
     getIndex(i, j) {
       this.indexClick = [i, j];
       this.clicks ++;
       this.main();
+      this.refresh();
     },
     main() {
       this.posAnterior[0] = this.posAtual[0];
@@ -463,17 +422,23 @@ var Main = new Vue({
           if (this.campos[i][j] == this.jg1d) {
             this.isPossible_down(i, j, this.jg1d, this.jg2);
             this.isPossible_up(i, j, this.jg1d, this.jg2);
+            return true;
           } else {
             this.isPossible_up(i, j, this.jg1, this.jg2);
+            return true;
           }
+          return false;
         }
         if (this.jogador == this.jg2) {
           if (this.campos[i][j] == this.jg2d) {
             this.isPossible_up(i, j, this.jg2d, this.jg1);
             this.isPossible_down(i, j, this.jg2d, this.jg1);
+            return true;
           } else {
             this.isPossible_down(i, j, this.jg2, this.jg1);
+            return true;
           }
+          return false;
         }
       }
     },
@@ -642,10 +607,14 @@ var Main = new Vue({
     },
     firstClick(i, j) {
       if (this.clicks == 1 && i <= this.campos.length -1 && j <= this.campos.length -1){
+
         if (this.jogador != this.campos[i][j]
           && this.jg1d != this.campos[i][j]
           && this.jg2d != this.campos[i][j]
-          && "img/fundoP.png" != this.campos[i][j]){
+          && "img/fundoP.png" != this.campos[i][j]) {
+            if (!this.isPossible(i, j)) {
+            } else {
+            }
           this.clicks = 0;
         } else {
           this.isPossible(i, j);
@@ -656,15 +625,56 @@ var Main = new Vue({
       this.campos[iA][jA] = "img/fundo.png";
       this.campos[i][j] = piece;
       this.clicks = 0;
+      this.refresh();
     },
     changePlayer(){
       if (this.jogador == this.jg1) {
         this.jogador = this.jg2;
-        $(".tabuleiro").css({"border" : "5px solid blue"});
+        this.refresh();
       } else {
         this.jogador = this.jg1;
-        $(".tabuleiro").css({"border": "5px solid red"});
+        this.refresh();
       }
+    },
+    refresh() {
+      this.campos.push([]);
+      this.campos.splice(this.campos.length-1, 1);
+    },
+    ping() {
+      const me = this;
+      $.ajax({
+        url: "../backend/getData.php",
+        method: "GET",
+        dataType: "json",
+        success(data) {
+          console.log(data);
+          me.campos = JSON.parse(data[0][2]);
+          me.jogador = data[0][3];
+          me.refresh();
+        },
+        error(args) {
+          console.log(args);
+          toastr.error("Erro inesperado");
+        },
+      });
+
+      // setTimeout(function() { me.ping() }, 4000);
+    },
+    starts() {
+      const me = this;
+      $.ajax({
+        url: "../backend/loadTable.php",
+        method: "GET",
+        dataType: "json",
+        success(data) {
+          console.log(data);
+          me.campos = JSON.parse(data[0][2]);
+        },
+        error(args) {
+          toastr.error(args.statusText);
+          console.warn(args);
+        }
+      });
     },
     won() {
       var qtdPoints = 12;
@@ -673,17 +683,23 @@ var Main = new Vue({
       }
       if (this.pontosJogador1 == qtdPoints) {
         this.vencedor = 1;
-        $(".tabuleiro").css({"border": "5px solid black"});
         return true;
+        this.refresh();
       } else if (this.pontosJogador2 == qtdPoints) {
         this.vencedor = 2;
-        $(".tabuleiro").css({"border": "5px solid black"});
         return true;
+        this.refresh();
       }
       return false;
+      this.refresh();
     }
   },
   created() {
-    this.geraTab();
-  }
+    const me = this;
+    this.starts();
+    setTimeout(function() { me.ping() }, 4000);
+  },
+  updated() {
+    this.refresh();
+  },
 });

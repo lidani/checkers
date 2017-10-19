@@ -1,10 +1,13 @@
-<?php include 'header.php'; ?>
+<?php
+  session_start();
+  include 'header.php';
+?>
 
 <div class="row" id="lobby">
   <div class="col s6 offset-s3">
     <div class="card-panel">
       <h4>Meus Jogos</h4>
-      <a href="newGame.php" class="btn">Novo Jogo</a>
+      <a class="btn blue-grey darken-2" href="newGame.php">Novo Jogo</a>
       <table>
         <thead>
           <tr>

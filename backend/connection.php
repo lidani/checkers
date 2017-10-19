@@ -2,14 +2,15 @@
 $mysqli = new mysqli("localhost", "root", "", "checkers");
 
 if (!$mysqli) {
-  die("Aconteceu um erro inesperado: " . $mysqli->connecton_errno());
+  die("Aconteceu um erro inesperado: " . $mysqli->connection_errno());
 }
 
 $jogos = "CREATE TABLE IF NOT EXISTS `jogos` (
     id bigint NOT NULL AUTO_INCREMENT,
     titulo varchar(255) NOT NULL,
-    tabuleiro varchar(10000) NOT NULL,
-    vez int,
+    tabuleiro varchar(5000),
+    vez varchar(64),
+    casas int(11) DEFAULT 8,
     status int,
     jogador1_id bigint,
     jogador2_id bigint,
@@ -29,6 +30,7 @@ $user = "CREATE TABLE IF NOT EXISTS `users`(
   empates int default 0,
   PRIMARY KEY (id)
 ) charset=utf8;";
+
 if (!$mysqli->query($jogos)) {
   die("Erro ao criar table " . $jogos);
 }

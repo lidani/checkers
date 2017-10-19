@@ -1,14 +1,11 @@
-* {
-  user-select: none;
-}
-
 .tabuleiro {
   display: inline-block;
   width: auto !important;
   margin: 12px auto;
   padding: 0px;
-  border: 5px solid red;
-  border-radius: .7%;
+  border: 3px solid black;
+  border-radius: .5%;
+  user-select: none;
 }
 .casa {
   position: relative;
@@ -36,12 +33,4 @@ img {
 }
 .score {
   font-size: 18px;
-}
-
-@keyframes example {
-    0%   {left:0px; top:100px;}
-    100%  {left:100px; top:0px;}
-    /*50%  {left:200px; top:200px;}
-    75%  {left:0px; top:200px;}
-    100% {left:0px; top:0px;}*/
 }
