@@ -1,7 +1,9 @@
 <?php
 session_start();
 
-$idUser = $_SESSION["id"];
+$user = (array)$_SESSION['user'];
+$idUser = $user["id"];
+
 $tabuleiro = $_POST["tabuleiro"];
 $vez = $_POST["vez"];
 $status = $_POST["status"];

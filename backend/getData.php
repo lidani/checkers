@@ -1,6 +1,8 @@
 <?php
 session_start();
-$idUser = $_SESSION["id"];
+
+$user = (array)$_SESSION['user'];
+$idUser = $user["id"];
 
 include 'connection.php';
 

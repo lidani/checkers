@@ -1,12 +1,11 @@
 <?php
   session_start();
 
-  unset($_SESSION["id"]);
-  unset($_SESSION["name"]);
-  unset($_SESSION["email"]);
+  unset($_SESSION["user"]);
 
   session_destroy();
-  session_start();
-  $_SESSION["logout"] = "Deslogado com sucesso";
-  header("Location: ../frontend/login.php");
+
+  if (session_status() == 1) {
+    echo json_encode("Deslogado");
+  };
 ?>

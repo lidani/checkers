@@ -1,12 +1,14 @@
 <?php session_start();
-if (!array_key_exists("id", $_SESSION)) {
+if (!array_key_exists("user", $_SESSION)) {
 	header("Location: index.php");
 	die();
 }
 
 include '../backend/connection.php';
 
-$userId = $_SESSION['id'];
+$user = (array)$_SESSION['user'];
+$userId = $user["id"];
+
 $res = $mysqli->query(
   "SELECT * FROM jogos WHERE jogador1_id=$userId OR jogador2_id=$userId"
 );

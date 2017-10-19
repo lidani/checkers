@@ -1,6 +1,6 @@
 <?php
 session_start();
-if (isset($_SESSION["id"])) {
+if (isset($_SESSION["user"])) {
 	header("Location: index.php");
 	die();
 }
@@ -11,40 +11,54 @@ include 'header.php';
 	<div class="col s6 offset-s3">
 		<div class="card-panel">
 			<h4>Faça seu login</h4>
-			<form action="../backend/authentication.php" method="POST">
+			<form v-on:submit="doLogin($event)">
         <div class="input-field">
-          <input type="email" name="email" id="email" />
+          <input type="email" v-model="email" id="email" required/>
           <label for="email">E-mail</label>
         </div>
 	        <div class="input-field">
-	          <input type="password" name="password" id="password" />
+	          <input type="password" v-model="password" id="password" required/>
 	          <label for="password">Senha</label>
 	        </div>
         <div class="input-field">
           <input type="submit" value="Login" class="btn blue-grey darken-2" />
-          <a href="cadastro.php" class="btn blue-grey darken-2">Cadastro</a>
         </div>
-      </form><br />
-      <?php
-				if (isset($_SESSION["logout"])) {
-					$logout = $_SESSION["logout"];
-					?>
-					<div class="section green lighten-3">
-						<p><?php echo $logout; unset($_SESSION["logout"]); ?></p>
-					</div>
-					<?php
-				}
-				if (isset($_SESSION["errorLogin"])) {
-					$erro = $_SESSION["errorLogin"];
-					?>
-					<div class="section red lighten-4">
-						<p><?php echo $erro; unset($_SESSION["errorLogin"]); ?></p>
-					</div>
-					<?php
-				}
-			?>
+      </form>
     </div>
 	</div>
 </div>
 
 <?php include 'footer.php'; ?>
+
+<script type="text/javascript">
+	var Login = new Vue({
+		el: "#app",
+		data: {
+			email: '',
+			password: '',
+		},
+		methods: {
+			doLogin(event) {
+				event.preventDefault();
+				const me = this;
+				$.ajax({
+					url: "../backend/authentication.php",
+					method: "POST",
+					dataType: "json",
+					data: {
+						email: me.email,
+						password: me.password,
+					},
+					success(data) {
+						toastr.success("Logado");
+						setTimeout(function(){ location.assign('index.php'); }, 500);
+					},
+					error(args) {
+						console.error(args);
+						toastr.error(args.responseText);
+					}
+				});
+			},
+		}
+	});
+</script>

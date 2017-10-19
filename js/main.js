@@ -666,6 +666,9 @@ var Main = new Vue({
         url: "../backend/loadTable.php",
         method: "GET",
         dataType: "json",
+        data: {
+          active: 1,
+        },
         success(data) {
           console.log(data);
           me.campos = JSON.parse(data[0][2]);

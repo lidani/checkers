@@ -1,6 +1,6 @@
 <?php
 session_start();
-if (!isset($_SESSION["id"])) {
+if (!isset($_SESSION["user"])) {
 	header("Location: index.php");
 	die();
 }
@@ -11,17 +11,7 @@ include 'header.php';
 	<div class="col s6 offset-s3">
 		<div class="card-panel">
 			<h4>Criar novo jogo</h4>
-			<?php
-				if (array_key_exists("erro", $_GET)) {
-					$erro = $_GET['erro'];
-					?>
-					<div class="section red lighten-4">
-						<p><?php echo $erro; ?></p>
-					</div>
-					<?php
-				}
-			?>
-			<form v-on:submit="sendData()">
+			<form v-on:submit="sendData($event)">
 			  <div class="input-field">
 			    <input type="text" v-model="nome" id="nome" required/>
 			    <label for="nome">Título</label>
@@ -56,7 +46,8 @@ var newGame = new Vue({
 		this.geraTab();
 	},
 	methods: {
-		sendData(){
+		sendData(event){
+			event.preventDefault();
 			const me = this;
 			$.ajax({
 				url: "../backend/NewGame.php",
@@ -69,9 +60,11 @@ var newGame = new Vue({
 				},
 				success(data) {
 					console.log(data);
+					toastr.success(data);
+					setTimeout(function() { location.assign("lobby.php"); }, 500);
 				},
 				error(args) {
-					toastr.error("Erro");
+					toastr.error(args.responseText);
 					console.warn("erro", args);
 				},
 			});

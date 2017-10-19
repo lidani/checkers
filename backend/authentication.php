@@ -12,14 +12,15 @@ if (!$res) {
 }
 $registros = $res->fetch_all();
 if (count($registros) > 0) {
-  $_SESSION['id'] = $registros[0][0];
-  $_SESSION['name'] = $registros[0][1];
-  $_SESSION['email'] = $registros[0][2];
-  $_SESSION['victories'] = $registros[0][4];
-  $_SESSION['empates'] = $registros[0][5];
-  header("Location: ../frontend/index.php");
+  $_SESSION['user'] = array(
+    'id' => $registros[0][0],
+    'name' => $registros[0][1],
+    'email' => $registros[0][2],
+    'victories' => $registros[0][4],
+    'empates' => $registros[0][5]
+  );
+  echo json_encode($_SESSION['user']);
 } else {
-  $_SESSION["errorLogin"] = "E-mail ou senha inválida";
-  header("Location: ../frontend/login.php");
+  echo "E-mail ou senha inválidos";
 }
 ?>

@@ -9,16 +9,16 @@
   </head>
   <body>
     <nav class="blue-grey darken-2">
-      <div class="nav-wrapper">
+      <div class="nav-wrapper" id="logout">
         <a href="index.php" class="brand-logo">&nbsp;<img style="width: 60px; top: 4px;" src="img/icon.jpg" /></a>
         <ul id="nav-mobile" class="right hide-on-med-and-down">
-          <?php if (!isset($_SESSION["id"])) { ?>
+          <?php if (!isset($_SESSION["user"])) { ?>
             <li><a href="login.php">Login</a></li>
             <li><a href="cadastro.php">Register</a></li>
           <?php } else { ?>
             <li><a href="lobby.php">Lista dos jogos</a></li>
             <li><a href="profile.php">Perfil</a></li>
-            <li><a href="../backend/logout.php">Deslogar</a></li>
+            <li><a v-on:click="doLogout($event)" href="#">Deslogar</a></li>
           <?php } ?>
         </ul>
       </div>

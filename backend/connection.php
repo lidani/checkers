@@ -15,7 +15,7 @@ $jogos = "CREATE TABLE IF NOT EXISTS `jogos` (
     jogador1_id bigint,
     jogador2_id bigint,
     rodadas int,
-    active boolean,
+    active boolean default false,
     winner int,
     empate boolean DEFAULT false,
     PRIMARY KEY (id)

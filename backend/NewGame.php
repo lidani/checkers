@@ -1,6 +1,7 @@
 <?php
 session_start();
-$userId = $_SESSION['id'];
+$user = (array)$_SESSION['user'];
+$userId = $user["id"];
 $nome = $_POST['nome'];
 $tab = $_POST['tabuleiro'];
 $vez = $_POST['vez'];
@@ -23,6 +24,6 @@ if (!$stmt->execute()) {
 }
 $stmt->close();
 
-header("Location: ../frontend/lobby.php");
+echo json_encode("Sala criada");
 
 ?>
