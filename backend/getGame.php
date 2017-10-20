@@ -1,5 +1,5 @@
 <?php session_start();
-if (!array_key_exists("id", $_SESSION)) {
+if (!array_key_exists("user", $_SESSION)) {
 	header("Location: index.php");
 	die();
 }

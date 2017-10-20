@@ -21,9 +21,15 @@ var Main = new Vue({
   methods: {
     getIndex(i, j) {
       this.indexClick = [i, j];
-      this.clicks ++;
-      this.main();
-      this.refresh();
+      if (this.owner && this.jogador == this.jg1) {
+        this.clicks ++;
+        this.main();
+        this.refresh();
+      } else if (!this.owner && this.jogador == this.jg2) {
+        this.clicks ++;
+        this.main();
+        this.refresh();
+      }
     },
     main() {
       this.posAnterior[0] = this.posAtual[0];
@@ -36,12 +42,21 @@ var Main = new Vue({
       var iA = this.posAnterior[0];
       var jA = this.posAnterior[1];
 
-      this.firstClick(i, j);
+      if (this.clicks == 1) {
+        if (this.campos[i][j] == this.jg1 && this.owner) {
+          this.firstClick(i, j);
+        } else if (this.campos[i][j] == this.jg2 && !this.owner) {
+          this.firstClick(i, j);
+        } else {
+          this.clicks = 0;
+          this.remover();
+        }
+      }
 
       if (this.clicks == 2 && !this.won()) {
         if (this.campos[i][j] == "img/fundoP.png") {
           //Player 1
-          if (this.jogador == this.jg1 && this.owner == true) {
+          if (this.jogador == this.jg1) {
             //Normal piece
             if (this.campos[iA][jA] == this.jg1) {
               //Move one row up
@@ -608,15 +623,11 @@ var Main = new Vue({
       }
     },
     firstClick(i, j) {
-      if (this.clicks == 1 && i <= this.campos.length -1 && j <= this.campos.length -1){
-
+      if (this.clicks == 1 && i <= this.campos.length -1 && j <= this.campos.length -1) {
         if (this.jogador != this.campos[i][j]
           && this.jg1d != this.campos[i][j]
           && this.jg2d != this.campos[i][j]
           && "img/fundoP.png" != this.campos[i][j]) {
-            if (!this.isPossible(i, j)) {
-            } else {
-            }
           this.clicks = 0;
         } else {
           this.isPossible(i, j);
@@ -675,11 +686,10 @@ var Main = new Vue({
           if (me.clicks == 0) {
             me.campos = JSON.parse(data[0][2]);
             me.jogador = data[0][3];
-            console.log(data[0][6], data[0][0]);
             me.refresh();
-            if (me.userId == data[0][0]) {
+            if (me.userId == data[0][6]) {
               me.owner = true;
-            } else {
+            } else if (me.userId == data[0][7]){
               me.owner = false;
             }
           }
@@ -690,7 +700,9 @@ var Main = new Vue({
         },
       });
 
-      // setTimeout(function() { me.ping() }, 4000);
+      // setTimeout(function() {
+      //   me.ping();
+      // }, 4000);
     },
     getUserId() {
       const me = this;
@@ -700,7 +712,6 @@ var Main = new Vue({
         dataType: "json",
         success(data) {
           me.userId = data;
-          console.log(me.userId);
         },
         error(args) {
           console.error(args);
@@ -708,7 +719,6 @@ var Main = new Vue({
       });
     },
     starts() {
-      this.getUserId();
       const me = this;
       $.ajax({
         url: "../backend/loadTable.php",
@@ -716,15 +726,14 @@ var Main = new Vue({
         dataType: "json",
         data: {
           active: 1,
-          userId: this.userId,
         },
         success(data) {
+          console.log(data);
           me.campos = JSON.parse(data[0][2]);
-          me.jogador = JSON.parse(data[0][3]);
-          if (me.userId != data[0])
+          me.jogador = data[0][3];
         },
         error(args) {
-          toastr.error(args.statusText);
+          toastr.error(args.responseText);
           console.warn(args);
         }
       });
@@ -748,11 +757,13 @@ var Main = new Vue({
     }
   },
   created() {
+    this.getUserId();
     this.starts();
     this.ping();
   },
   updated() {
     this.refresh();
-    console.log(this.owner);
+    console.log("userId: ", this.userId);
+    console.log("Owner: ", this.owner);
   },
 });

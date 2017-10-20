@@ -3,10 +3,11 @@ session_start();
 
 $user = (array)$_SESSION['user'];
 $idUser = $user["id"];
+$gameId = $_SESSION["gameId"];
 
 include 'connection.php';
 
-$query = "SELECT * FROM `jogos` WHERE jogador1_id = '$idUser' or jogador2_id = '$idUser'";
+$query = "SELECT * FROM `jogos` WHERE `id` = '$gameId'";
 $res = $mysqli->query($query);
 
 if (!$res) {

@@ -1,5 +1,10 @@
 <?php include './headerGame.php' ?>
-
+<?php
+  if (array_key_exists("id", $_GET)) {
+    session_start();
+    $_SESSION["gameId"] = $_GET["id"];
+  }
+?>
   <h5 class="blue-text" v-if="jogador == 'img/img2.png' &amp;&amp; !won()">Vez do jogador: Azul</h5>
   <h5 class="red-text" v-else-if="jogador == 'img/img.png' &amp;&amp; !won()">Vez do jogador: Vermelho</h5>
   <div v-if="!won()" class="score">
