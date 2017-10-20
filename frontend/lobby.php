@@ -1,5 +1,11 @@
 <?php
   session_start();
+
+  if (!isset($_SESSION["user"])) {
+    header("Location: login.php");
+    die();
+  }
+
   include 'header.php';
 ?>
 
@@ -7,7 +13,7 @@
   <div class="col s6 offset-s3">
     <div class="card-panel z-depth-5">
       <h4>Meus Jogos</h4> <br />
-      <a class="btn blue-grey darken-2" href="newGame.php">Novo Jogo</a>
+      <a class="btn blue-grey darken-2" href="newGame.php">Novo Jogo</a><br><br>
       <div class="" v-if="jogos.length > 0">
         <table>
           <thead>
@@ -15,6 +21,7 @@
               <th>ID</th>
               <th>Jogo</th>
               <th>Active</th>
+              <th>Winner</th>
               <th>Entrar</th>
             </tr>
           </thead>
@@ -22,7 +29,9 @@
             <tr v-for="jogo in jogos">
               <td>{{jogo[0]}}</td>
               <td>{{jogo[1]}}</td>
-              <td>{{jogo[9]}}</td>
+              <td>{{jogo[10]}}</td>
+              <td v-if="jogo[11] == null">nobody</td>
+              <td v-else>{{jogo[11]}}</td>
               <td><a :href="`game.php?id=${jogo[0]}`">Entrar</a></td>
             </tr>
           </tbody>

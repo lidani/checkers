@@ -8,6 +8,8 @@
   $turn = $_POST["turn"];
   $status = $_POST["status"];
   $active = $_POST["active"];
+  $jg1P = $_POST["player1_points"];
+  $jg2P = $_POST["player2_points"];
   $gameId = $_SESSION["gameId"];
 
   include 'connection.php';
@@ -15,6 +17,7 @@
   $query = "UPDATE `jogos`
     SET `board` = '$board', `active` = '$active',
     `turn` = '$turn', `status` = '$status',
+    `player1_points` = '$jg1P', `player2_points` = '$jg2P'
     WHERE `id` = '$gameId'";
 
   if (!$mysqli->query($query)) {

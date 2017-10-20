@@ -12,6 +12,9 @@ var Main = new Vue({
     pontosJogador2: 0,
     vencedor: null,
     userId: null,
+    status: 0,
+    winner: this.status,
+    winner_id: null,
     jogador: 'img/img.png',
     jg1: 'img/img.png',
     jg2: 'img/img2.png',
@@ -21,14 +24,16 @@ var Main = new Vue({
   methods: {
     getIndex(i, j) {
       this.indexClick = [i, j];
-      if (this.owner && this.jogador == this.jg1) {
-        this.clicks ++;
-        this.main();
-        this.refresh();
-      } else if (!this.owner && this.jogador == this.jg2) {
-        this.clicks ++;
-        this.main();
-        this.refresh();
+      if (this.winner == 0) {
+        if (this.owner && this.jogador == this.jg1) {
+          this.clicks ++;
+          this.main();
+          this.refresh();
+        } else if (!this.owner && this.jogador == this.jg2) {
+          this.clicks ++;
+          this.main();
+          this.refresh();
+        }
       }
     },
     main() {
@@ -76,15 +81,16 @@ var Main = new Vue({
                       this.mover(i, j, iA, jA, this.jg1d);
                       this.campos[iA -1][jA -1] = "img/fundo.png";
                       this.isPossible_doubleJump(i, j, this.jg1d, this.jg2);
+                      this.pontosJogador1 ++;
                       this.changePlayer();
                     } else {
                       this.mover(i, j, iA, jA, this.jg1);
                       this.campos[iA -1][jA -1] = "img/fundo.png";
                       this.isPossible_doubleJump(i, j, this.jg1, this.jg2);
+                      this.pontosJogador1 ++;
                       this.changePlayer();
                     }
                     this.remover();
-                    this.pontosJogador1 ++;
                   }
                 }
                 //Right column
@@ -96,15 +102,16 @@ var Main = new Vue({
                       this.mover(i, j, iA, jA, this.jg1d);
                       this.campos[iA -1][jA +1] = "img/fundo.png";
                       this.isPossible_doubleJump(i, j, this.jg1d, this.jg2);
+                      this.pontosJogador1 ++;
                       this.changePlayer();
                     } else {
                       this.mover(i, j, iA, jA, this.jg1);
                       this.campos[iA -1][jA +1] = "img/fundo.png";
                       this.isPossible_doubleJump(i, j, this.jg1, this.jg2);
+                      this.pontosJogador1 ++;
                       this.changePlayer();
                     }
                     this.remover();
-                    this.pontosJogador1 ++;
                   }
                 }
               }
@@ -135,9 +142,9 @@ var Main = new Vue({
                       this.isPossible_doubleJump(i, j, this.jg1d, this.jg2, this.jg1d);
                     }
                     this.isPossible_doubleJump(i, j, this.jg1d, this.jg2);
+                    this.pontosJogador1 ++;
                     this.changePlayer();
                     this.remover();
-                    this.pontosJogador1 ++;
                   }
                 }
                 else if (j == jA +2){
@@ -150,9 +157,9 @@ var Main = new Vue({
                       this.isPossible_doubleJump(i, j, this.jg1d, this.jg2, this.jg1d);
                     }
                     this.isPossible_doubleJump(i, j, this.jg1d, this.jg2);
+                    this.pontosJogador1 ++;
                     this.changePlayer();
                     this.remover();
-                    this.pontosJogador1 ++;
                   }
                 }
               }
@@ -168,9 +175,9 @@ var Main = new Vue({
                       this.isPossible_doubleJump(i, j, this.jg1d, this.jg2, this.jg1d);
                     }
                     this.isPossible_doubleJump(i, j, this.jg1d, this.jg2);
+                    this.pontosJogador1 ++;
                     this.changePlayer();
                     this.remover();
-                    this.pontosJogador1 ++;
                   }
                 }
                 //Right column
@@ -183,9 +190,9 @@ var Main = new Vue({
                       this.isPossible_doubleJump(i, j, this.jg1d, this.jg2, this.jg1d);
                     }
                     this.isPossible_doubleJump(i, j, this.jg1d, this.jg2);
+                    this.pontosJogador1 ++;
                     this.changePlayer();
                     this.remover();
-                    this.pontosJogador1 ++;
                   }
                 }
               } else {
@@ -217,15 +224,16 @@ var Main = new Vue({
                       this.mover(i, j, iA, jA, this.jg2d);
                       this.campos[iA +1][jA -1] = "img/fundo.png";
                       this.isPossible_doubleJump(i, j, this.jg2d, this.jg2);
+                      this.pontosJogador2 ++;
                       this.changePlayer();
                     } else {
                       this.mover(i, j, iA, jA, this.jg2);
                       this.campos[iA +1][jA -1] = "img/fundo.png";
                       this.isPossible_doubleJump(i, j, this.jg2, this.jg1);
+                      this.pontosJogador2 ++;
                       this.changePlayer();
                     }
                     this.remover();
-                    this.pontosJogador2 ++;
                   }
                 }
                 //Right column
@@ -236,15 +244,16 @@ var Main = new Vue({
                       this.mover(i, j, iA, jA, this.jg2d);
                       this.campos[iA +1][jA +1] = "img/fundo.png";
                       this.isPossible_doubleJump(i, j, this.jg2d, this.jg2);
+                      this.pontosJogador2 ++;
                       this.changePlayer();
                     } else {
                       this.mover(i, j, iA, jA, this.jg2);
                       this.campos[iA +1][jA +1] = "img/fundo.png";
                       this.isPossible_doubleJump(i, j, this.jg2, this.jg1);
+                      this.pontosJogador2 ++;
                       this.changePlayer();
                     }
                     this.remover();
-                    this.pontosJogador2 ++;
                   }
                 }
               }
@@ -275,9 +284,9 @@ var Main = new Vue({
                       this.isPossible_doubleJump(i, j, this.jg2d, this.jg1, this.jg2d);
                     }
                     this.isPossible_doubleJump(i, j, this.jg2d, this.jg1);
+                    this.pontosJogador2 ++;
                     this.changePlayer();
                     this.remover();
-                    this.pontosJogador2 ++;
                   }
                 }
                 //Right column
@@ -290,9 +299,9 @@ var Main = new Vue({
                       this.isPossible_doubleJump(i, j, this.jg2d, this.jg1, this.jg2d);
                     }
                     this.isPossible_doubleJump(i, j, this.jg2d, this.jg1);
+                    this.pontosJogador2 ++;
                     this.changePlayer();
                     this.remover();
-                    this.pontosJogador2 ++;
                   }
                 }
               }
@@ -308,9 +317,9 @@ var Main = new Vue({
                       this.isPossible_doubleJump(i, j, this.jg2d, this.jg1, this.jg2d);
                     }
                     this.isPossible_doubleJump(i, j, this.jg2d, this.jg1);
+                    this.pontosJogador2 ++;
                     this.changePlayer();
                     this.remover();
-                    this.pontosJogador2 ++;
                   }
                 }
                 //Right column
@@ -323,9 +332,9 @@ var Main = new Vue({
                       this.isPossible_doubleJump(i, j, this.jg2d, this.jg1, this.jg2d);
                     }
                     this.isPossible_doubleJump(i, j, this.jg2d, this.jg1);
+                    this.pontosJogador2 ++;
                     this.changePlayer();
                     this.remover();
-                    this.pontosJogador2 ++;
                   }
                 }
               } else {
@@ -656,9 +665,8 @@ var Main = new Vue({
     update() {
       this.remover();
       const me = this;
-      let status;
-      if (!this.won) status = 0;
-      else if (this.won) status = 1;
+      if (!this.won) this.status = 0;
+      else if (this.won) this.status = 1;
       $.ajax({
         url: "../backend/insertInto.php",
         method: "POST",
@@ -666,7 +674,7 @@ var Main = new Vue({
         data: {
           board: JSON.stringify(this.campos),
           turn: this.jogador,
-          status: status,
+          status: this.status,
           active: 1,
           player1_points: this.pontosJogador1,
           player2_points: this.pontosJogador2,
@@ -689,6 +697,8 @@ var Main = new Vue({
           if (me.clicks == 0) {
             me.campos = JSON.parse(data[0][2]);
             me.jogador = data[0][3];
+            me.pontosJogador1 = data[0][8];
+            me.pontosJogador2 = data[0][9];
             me.refresh();
             if (me.userId == data[0][6]) {
               me.owner = true;
@@ -703,9 +713,11 @@ var Main = new Vue({
         },
       });
 
-      // setTimeout(function() {
-      //   me.ping();
-      // }, 4000);
+      if (!this.won()) {
+        setTimeout(function() {
+          me.ping();
+        }, 4000);
+      }
     },
     getUserId() {
       const me = this;
@@ -746,14 +758,16 @@ var Main = new Vue({
       if (this.wXh == 10) {
         qtdPoints = 20;
       }
-      if (this.pontosJogador1 == qtdPoints) {
+      if (this.pontosJogador1 == qtdPoints && this.owner) {
         this.vencedor = 1;
-        return true;
+        this.winner_id = this.userId;
         this.refresh();
-      } else if (this.pontosJogador2 == qtdPoints) {
+        return true;
+      } else if (this.pontosJogador2 == qtdPoints && !this.owner) {
         this.vencedor = 2;
-        return true;
+        this.winner_id = this.userId;
         this.refresh();
+        return true;
       }
       return false;
       this.refresh();
@@ -766,7 +780,5 @@ var Main = new Vue({
   },
   updated() {
     this.refresh();
-    console.log("userId: ", this.userId);
-    console.log("Owner: ", this.owner);
   },
 });

@@ -12,7 +12,7 @@
   if (count($res) > 0) {
     if (($userId != $res[0][6])) {
       $update = $mysqli->query(
-        "UPDATE `jogos` SET `active` = 1, `player2_id` = '$idUser'
+        "UPDATE `jogos` SET `active` = 1, `player2_id` = '$userId'
         WHERE `id` = '$gameId'"
       );
     } else {

@@ -11,9 +11,10 @@
 
 <div>
   <h5>Seja bem vindo <?php echo $user["name"]; ?></h5>
-  <h5>Você possui <?php echo $user["victories"]; ?> vitórias e <?php echo $user["empates"] ?> empates.</h5>
+  <h5>Você possui <?php echo $user["victories"]; ?> vitórias.</h5>
   <br />
   <a class="btn blue-grey darken-2" href="newGame.php">Criar um jogo</a>
+  <a class="btn blue-grey darken-2" href="lobby.php">Lista de jogos</a>
 </div>
 
 <?php include 'footer.php'; ?>
