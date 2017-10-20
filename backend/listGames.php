@@ -1,22 +1,18 @@
-<?php session_start();
-if (!array_key_exists("user", $_SESSION)) {
-	header("Location: index.php");
-	die();
-}
+<?php
+session_start();
 
-include '../backend/connection.php';
+include 'connection.php';
 
 $user = (array)$_SESSION['user'];
 $userId = $user["id"];
 
 $res = $mysqli->query(
-  "SELECT * FROM jogos WHERE jogador1_id=$userId OR jogador2_id=$userId"
+  "SELECT * FROM jogos WHERE player1_id=$userId OR player2_id=$userId"
 );
 if (!$res) {
   die("Error querying jogos table.");
 }
-$jogos = $res->fetch_all();
 
-echo json_encode($jogos);
+echo json_encode($res->fetch_all());
 
 ?>

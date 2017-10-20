@@ -1,5 +1,6 @@
 <?php
 session_start();
+
 if (!isset($_SESSION["user"])) {
 	header("Location: index.php");
 	die();
@@ -13,7 +14,7 @@ include 'header.php';
 			<h4>Criar novo jogo</h4>
 			<form v-on:submit="sendData($event)">
 			  <div class="input-field">
-			    <input type="text" v-model="nome" id="nome" required/>
+			    <input type="text" v-model="title" id="nome" required/>
 			    <label for="nome">Título</label>
 			  </div>
 			  <div class="input-field">
@@ -30,9 +31,9 @@ include 'header.php';
 var newGame = new Vue({
 	el: "#app",
 	data: {
-		nome: '',
+		title: '',
 		wXh: 8,
-		tabuleiro: [],
+		board: [],
 		jg1: 'img/img.png',
     jg2: 'img/img2.png',
 	},
@@ -48,9 +49,9 @@ var newGame = new Vue({
 				method: "POST",
 				dataType: "json",
 				data: {
-					nome: me.nome,
-					tabuleiro: JSON.stringify(me.tabuleiro),
-					vez: "img/img.png",
+					title: me.title,
+					board: JSON.stringify(me.board),
+					turn: me.jg1,
 				},
 				success(data) {
 					console.log(data);
@@ -69,42 +70,41 @@ var newGame = new Vue({
         for (var j = 0; j < this.wXh; j++) {
           list.push("img/fundo.png");
         }
-        this.tabuleiro.push(list);
+        this.board.push(list);
       }
-      for (var i = 0; i < this.tabuleiro.length; i++) {
-        for (var j = 0; j < this.tabuleiro[i].length; j++) {
-          if (this.tabuleiro.length == 10) {
-            if (i == this.tabuleiro.length -4) {
+      for (var i = 0; i < this.board.length; i++) {
+        for (var j = 0; j < this.board[i].length; j++) {
+          if (this.board.length == 10) {
+            if (i == this.board.length -4) {
               if (j % 2 != 0) {
-                this.tabuleiro[i][j] = this.jg1;
+                this.board[i][j] = this.jg1;
               }
             }
             if (i == 3) {
               if (j % 2 == 0) {
-                this.tabuleiro[i][j] = this.jg2;
+                this.board[i][j] = this.jg2;
               }
             }
           }
           if (i == 1) {
             if (j % 2 == 0) {
-              this.tabuleiro[i][j] = this.jg2;
+              this.board[i][j] = this.jg2;
             }
           } else if (i == 0 || i == 2) {
             if (j % 2 != 0){
-              this.tabuleiro[i][j] = this.jg2;
+              this.board[i][j] = this.jg2;
             }
-          } else if (i == this.tabuleiro.length -2) {
+          } else if (i == this.board.length -2) {
             if (j % 2 != 0) {
-              this.tabuleiro[i][j] = this.jg1;
+              this.board[i][j] = this.jg1;
             }
-          } else if (i == this.tabuleiro.length -1 || i == this.tabuleiro.length -3) {
+          } else if (i == this.board.length -1 || i == this.board.length -3) {
             if (j % 2 == 0) {
-              this.tabuleiro[i][j] = this.jg1;
+              this.board[i][j] = this.jg1;
             }
           }
         }
       }
-			console.log(this.tabuleiro);
     },
 	},
 });

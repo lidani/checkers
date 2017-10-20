@@ -7,17 +7,17 @@ if (!$mysqli) {
 
 $jogos = "CREATE TABLE IF NOT EXISTS `jogos` (
     id bigint NOT NULL AUTO_INCREMENT,
-    titulo varchar(255) NOT NULL,
-    tabuleiro varchar(5000),
-    vez varchar(64),
-    casas int(11) DEFAULT 8,
-    status int,
-    jogador1_id bigint,
-    jogador2_id bigint,
-    rodadas int,
-    active boolean default false,
-    winner int,
-    empate boolean DEFAULT false,
+    title varchar(255) NOT NULL,
+    board varchar(6000),
+    turn varchar(64),
+    size int(11) DEFAULT 8,
+    status int DEFAULT 0,
+    player1_id bigint,
+    player2_id bigint,
+    player1_points int DEFAULT 0,
+    player2_points int DEFAULT 0,
+    active boolean DEFAULT false,
+    winner_id bigint,
     PRIMARY KEY (id)
   ) charset=utf8;";
 
@@ -27,12 +27,11 @@ $user = "CREATE TABLE IF NOT EXISTS `users`(
   email varchar(255),
   password varchar(255),
   victories bigint default 0,
-  empates int default 0,
   PRIMARY KEY (id)
 ) charset=utf8;";
 
 if (!$mysqli->query($jogos)) {
-  die("Erro ao criar table " . $jogos);
+  die("Erro ao criar table " . $mysqli->error . $jogos);
 }
 if (!$mysqli->query($user)) {
   die("erro ao criar a table: ". $user);

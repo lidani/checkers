@@ -1,8 +1,6 @@
 <?php
 session_start();
 
-$user = (array)$_SESSION['user'];
-$idUser = $user["id"];
 $gameId = $_SESSION["gameId"];
 
 include 'connection.php';
@@ -14,5 +12,5 @@ if (!$res) {
   die("Erro ao query table jogos: " . $mysqli->error());
 }
 
-echo (json_encode($res->fetch_all()));
+echo json_encode($res->fetch_all());
 ?>

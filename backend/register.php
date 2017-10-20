@@ -6,15 +6,14 @@
   $email = $_POST["email"];
   $password = md5($_POST["password"]);
 
-  $query = "INSERT INTO `users`(id, name, email, password) ".
+  $query = "INSERT INTO `users` (id, name, email, password) ".
     "VALUES (NULL, ?, ?, ?)";
   $stmt = $mysqli->prepare($query);
   if (!$stmt) {
       die("Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error);
   }
   if (!$stmt->bind_param("sss", $name, $email, $password)) {
-      die("Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error
-      . "<br />Nome: $name");
+      die("Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error);
   }
 
   if (!$stmt->execute()) {

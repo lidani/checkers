@@ -43,9 +43,9 @@ var Main = new Vue({
       var jA = this.posAnterior[1];
 
       if (this.clicks == 1) {
-        if (this.campos[i][j] == this.jg1 && this.owner) {
+        if ((this.campos[i][j] == this.jg1 || this.campos[i][j] == this.jg1d) && this.owner) {
           this.firstClick(i, j);
-        } else if (this.campos[i][j] == this.jg2 && !this.owner) {
+        } else if ((this.campos[i][j] == this.jg2 || this.campos[i][j] == this.jg2d) && !this.owner) {
           this.firstClick(i, j);
         } else {
           this.clicks = 0;
@@ -656,19 +656,22 @@ var Main = new Vue({
     update() {
       this.remover();
       const me = this;
-      console.log(this.jogador);
+      let status;
+      if (!this.won) status = 0;
+      else if (this.won) status = 1;
       $.ajax({
         url: "../backend/insertInto.php",
         method: "POST",
         dataType: "json",
         data: {
-          tabuleiro: JSON.stringify(this.campos),
-          vez: this.jogador,
-          status: 0,
+          board: JSON.stringify(this.campos),
+          turn: this.jogador,
+          status: status,
           active: 1,
+          player1_points: this.pontosJogador1,
+          player2_points: this.pontosJogador2,
         },
         success(data) {
-          console.log(data);
         },
         error(args) {
           console.error(args);
