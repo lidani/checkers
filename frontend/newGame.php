@@ -8,20 +8,14 @@ include 'header.php';
 ?>
 
 <div class="row">
-	<div class="col s6 offset-s3">
-		<div class="card-panel">
+	<div class="card col s6 offset-s3">
+		<div class="card-content">
 			<h4>Criar novo jogo</h4>
 			<form v-on:submit="sendData($event)">
 			  <div class="input-field">
 			    <input type="text" v-model="nome" id="nome" required/>
 			    <label for="nome">Título</label>
 			  </div>
-				<select v-model="wXh">
-				  <option disabled value="">Escolha um item</option>
-				  <option>A</option>
-				  <option>B</option>
-				  <option>C</option>
-				</select>
 			  <div class="input-field">
 			    <input type="submit" value="Cadastrar" class="btn blue-grey darken-2" />
 			  </div>
@@ -37,12 +31,12 @@ var newGame = new Vue({
 	el: "#app",
 	data: {
 		nome: '',
-		tabuleiro: [],
 		wXh: 8,
+		tabuleiro: [],
 		jg1: 'img/img.png',
     jg2: 'img/img2.png',
 	},
-	mounted() {
+	created() {
 		this.geraTab();
 	},
 	methods: {

@@ -13,7 +13,7 @@ include 'connection.php';
 
 $query = "UPDATE `jogos`
   SET `tabuleiro` = '$tabuleiro', `active` = '$active',
-  `vez` = '$vez', `status` = '$status', `vez` = 'img/img.png'
+  `vez` = '$vez', `status` = '$status', `vez` = '$vez'
   WHERE `jogos`.`jogador1_id` = '$idUser' or `jogos`.`jogador2_id` = '$idUser'
   and `jogos`.`active` = 1;";
 

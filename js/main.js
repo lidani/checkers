@@ -6,10 +6,12 @@ var Main = new Vue({
     indexClick: [null, null],
     posAnterior: [null, null],
     posAtual: [],
+    owner: true,
     clicks: 0,
     pontosJogador1: 0,
     pontosJogador2: 0,
     vencedor: null,
+    userId: null,
     jogador: 'img/img.png',
     jg1: 'img/img.png',
     jg2: 'img/img2.png',
@@ -39,7 +41,7 @@ var Main = new Vue({
       if (this.clicks == 2 && !this.won()) {
         if (this.campos[i][j] == "img/fundoP.png") {
           //Player 1
-          if (this.jogador == this.jg1) {
+          if (this.jogador == this.jg1 && this.owner == true) {
             //Normal piece
             if (this.campos[iA][jA] == this.jg1) {
               //Move one row up
@@ -630,15 +632,37 @@ var Main = new Vue({
     changePlayer(){
       if (this.jogador == this.jg1) {
         this.jogador = this.jg2;
-        this.refresh();
       } else {
         this.jogador = this.jg1;
-        this.refresh();
       }
+      this.update();
+      this.refresh();
     },
     refresh() {
       this.campos.push([]);
       this.campos.splice(this.campos.length-1, 1);
+    },
+    update() {
+      this.remover();
+      const me = this;
+      console.log(this.jogador);
+      $.ajax({
+        url: "../backend/insertInto.php",
+        method: "POST",
+        dataType: "json",
+        data: {
+          tabuleiro: JSON.stringify(this.campos),
+          vez: this.jogador,
+          status: 0,
+          active: 1,
+        },
+        success(data) {
+          console.log(data);
+        },
+        error(args) {
+          console.error(args);
+        },
+      });
     },
     ping() {
       const me = this;
@@ -648,9 +672,17 @@ var Main = new Vue({
         dataType: "json",
         success(data) {
           console.log(data);
-          me.campos = JSON.parse(data[0][2]);
-          me.jogador = data[0][3];
-          me.refresh();
+          if (me.clicks == 0) {
+            me.campos = JSON.parse(data[0][2]);
+            me.jogador = data[0][3];
+            console.log(data[0][6], data[0][0]);
+            me.refresh();
+            if (me.userId == data[0][0]) {
+              me.owner = true;
+            } else {
+              me.owner = false;
+            }
+          }
         },
         error(args) {
           console.log(args);
@@ -660,7 +692,23 @@ var Main = new Vue({
 
       // setTimeout(function() { me.ping() }, 4000);
     },
+    getUserId() {
+      const me = this;
+      $.ajax({
+        url: "../backend/getUserId.php",
+        method: "GET",
+        dataType: "json",
+        success(data) {
+          me.userId = data;
+          console.log(me.userId);
+        },
+        error(args) {
+          console.error(args);
+        },
+      });
+    },
     starts() {
+      this.getUserId();
       const me = this;
       $.ajax({
         url: "../backend/loadTable.php",
@@ -668,10 +716,12 @@ var Main = new Vue({
         dataType: "json",
         data: {
           active: 1,
+          userId: this.userId,
         },
         success(data) {
-          console.log(data);
           me.campos = JSON.parse(data[0][2]);
+          me.jogador = JSON.parse(data[0][3]);
+          if (me.userId != data[0])
         },
         error(args) {
           toastr.error(args.statusText);
@@ -698,11 +748,11 @@ var Main = new Vue({
     }
   },
   created() {
-    const me = this;
     this.starts();
-    setTimeout(function() { me.ping() }, 4000);
+    this.ping();
   },
   updated() {
     this.refresh();
+    console.log(this.owner);
   },
 });
