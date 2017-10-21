@@ -4,6 +4,7 @@
 
   $user = (array)$_SESSION['user'];
   $userId = $user["id"];
+  $victories = $user["victories"];
 
   $board = $_POST["board"];
   $turn = $_POST["turn"];
@@ -15,17 +16,17 @@
 
   if (array_key_exists("winner_id", $_POST)) {
     if ($winner_id != null) {
-      $status = 1;
-      $active = 0;
       $query = "UPDATE `jogos`
-        SET `board` = '$board', `active` = '$active',
-        `turn` = '$turn', `status` = '$status', `winner_id` = '$winner_id', `winner` = '$winner',
+        SET `board` = '$board', `active` = 0,
+        `turn` = '$turn', `status` = 2, `winner_id` = '$winner_id', `winner` = '$winner',
         `player1_points` = '$jg1P', `player2_points` = '$jg2P'
         WHERE `id` = '$gameId'";
+      $winner = "UPDATE `users`
+        SET `victories` = $victories += 1";
     } else {
       $query = "UPDATE `jogos`
-        SET `board` = '$board', `active` = '$active',
-        `turn` = '$turn', `status` = '$status',
+        SET `board` = '$board', `active` = 1,
+        `turn` = '$turn', `status` = 1,
         `player1_points` = '$jg1P', `player2_points` = '$jg2P'
         WHERE `id` = '$gameId'";
     }

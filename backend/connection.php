@@ -19,6 +19,7 @@ $jogos = "CREATE TABLE IF NOT EXISTS `jogos` (
     active boolean DEFAULT false,
     winner_id bigint,
     winner varchar(64),
+    creation varchar(128),
     PRIMARY KEY (id)
   ) charset=utf8;";
 

@@ -30,8 +30,9 @@
               <td>{{jogo[0]}}</td>
               <td>{{jogo[1]}}</td>
               <td>{{jogo[10]}}</td>
-              <td v-if="jogo[11] == null">nobody</td>
-              <td v-else>{{jogo[11]}}</td>
+              <td v-if="jogo[12] == null">nobody</td>
+              <td v-else-if="jogo[12] == 'img/img.png'">Vermelho</td>
+              <td v-else>Azul</td>
               <td><a :href="`game.php?id=${jogo[0]}`">Entrar</a></td>
             </tr>
           </tbody>

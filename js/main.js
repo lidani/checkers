@@ -8,6 +8,7 @@ var Main = new Vue({
     posAtual: [],
     owner: null,
     clicks: 0,
+    active: 0,
     pontosJogador1: 0,
     pontosJogador2: 0,
     winner: null,
@@ -666,8 +667,8 @@ var Main = new Vue({
       console.log(this.winner_id);
       this.remover();
       const me = this;
-      if (this.winner == null) { this.status = 0; active = 1; }
-      else { this.status = 1; active = 0; }
+      if (this.winner == null) this.status = 0;
+      else this.status = 1;
       $.ajax({
         url: "../backend/insertInto.php",
         method: "POST",
