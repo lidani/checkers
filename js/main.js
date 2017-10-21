@@ -6,25 +6,24 @@ var Main = new Vue({
     indexClick: [null, null],
     posAnterior: [null, null],
     posAtual: [],
-    owner: true,
+    owner: null,
     clicks: 0,
     pontosJogador1: 0,
     pontosJogador2: 0,
-    vencedor: null,
+    winner: null,
     userId: null,
     status: 0,
-    winner: this.status,
     winner_id: null,
-    jogador: 'img/img.png',
     jg1: 'img/img.png',
     jg2: 'img/img2.png',
     jg1d: 'img/dama.png',
     jg2d: 'img/dama2.png',
+    jogador: this.jg1,
   },
   methods: {
     getIndex(i, j) {
       this.indexClick = [i, j];
-      if (this.winner == 0) {
+      if (!this.won()) {
         if (this.owner && this.jogador == this.jg1) {
           this.clicks ++;
           this.main();
@@ -58,7 +57,7 @@ var Main = new Vue({
         }
       }
 
-      if (this.clicks == 2 && !this.won()) {
+      if (this.clicks == 2) {
         if (this.campos[i][j] == "img/fundoP.png") {
           //Player 1
           if (this.jogador == this.jg1) {
@@ -497,7 +496,7 @@ var Main = new Vue({
                 this.do_DoubleJump(i+2, j-2, j1, j2);
               }
             }
-            if ((i+2 <= this.campos.length -1 && j+2 <= this.campos.length -1)
+            else if ((i+2 <= this.campos.length -1 && j+2 <= this.campos.length -1)
               && (this.campos[i +1][j +1] == j2
               || this.campos[i +1][j +1] == inimigoD)
               && this.campos[i +2][j +2] == "img/fundo.png") {
@@ -537,7 +536,7 @@ var Main = new Vue({
                 this.do_DoubleJump(i-2, j-2, j1, j2);
               }
             }
-            if ((i-2 >= 0 && j+2 <= this.campos.length -1)
+            else if ((i-2 >= 0 && j+2 <= this.campos.length -1)
               && (this.campos[i -1][j +1] == j2
               || this.campos[i -1][j +1] == inimigoD)
               && this.campos[i -2][j +2] == "img/fundo.png") {
@@ -572,7 +571,7 @@ var Main = new Vue({
             this.remover();
             this.do_DoubleJump(i-2, j+2, j1, j2);
           }
-          if ((i-2 >= 0 && j-2 >= 0)
+          else if ((i-2 >= 0 && j-2 >= 0)
             && (this.campos[i -1][j -1] == j2
             || this.campos[i -1][j -1] == inimigoD)
             && this.campos[i -2][j -2] == "img/fundo.png") {
@@ -584,7 +583,7 @@ var Main = new Vue({
             this.remover();
             this.do_DoubleJump(i-2, j-2, j1, j2);
           }
-          if ((i+2 <= this.campos.length -1 && j-2 >= 0)
+          else if ((i+2 <= this.campos.length -1 && j-2 >= 0)
             && (this.campos[i +1][j -1] == j2
             || this.campos[i +1][j -1] == inimigoD)
             && this.campos[i +2][j -2] == "img/fundo.png") {
@@ -596,7 +595,7 @@ var Main = new Vue({
             this.remover();
             this.do_DoubleJump(i+2, j-2, j1, j2);
           }
-          if ((i+2 <= this.campos.length -1 && j+2 <= this.campos.length -1)
+          else if ((i+2 <= this.campos.length -1 && j+2 <= this.campos.length -1)
             && (this.campos[i +1][j +1] == j2
             || this.campos[i +1][j +1] == inimigoD)
             && this.campos[i +2][j +2] == "img/fundo.png") {
@@ -655,6 +654,7 @@ var Main = new Vue({
       } else {
         this.jogador = this.jg1;
       }
+      this.won();
       this.update();
       this.refresh();
     },
@@ -663,10 +663,11 @@ var Main = new Vue({
       this.campos.splice(this.campos.length-1, 1);
     },
     update() {
+      console.log(this.winner_id);
       this.remover();
       const me = this;
-      if (!this.won) this.status = 0;
-      else if (this.won) this.status = 1;
+      if (this.winner == null) { this.status = 0; active = 1; }
+      else { this.status = 1; active = 0; }
       $.ajax({
         url: "../backend/insertInto.php",
         method: "POST",
@@ -674,10 +675,10 @@ var Main = new Vue({
         data: {
           board: JSON.stringify(this.campos),
           turn: this.jogador,
-          status: this.status,
-          active: 1,
           player1_points: this.pontosJogador1,
           player2_points: this.pontosJogador2,
+          winner_id: this.winner_id,
+          winner: this.winner,
         },
         success(data) {
         },
@@ -688,32 +689,32 @@ var Main = new Vue({
     },
     ping() {
       const me = this;
-      $.ajax({
-        url: "../backend/getData.php",
-        method: "GET",
-        dataType: "json",
-        success(data) {
-          console.log(data);
-          if (me.clicks == 0) {
-            me.campos = JSON.parse(data[0][2]);
-            me.jogador = data[0][3];
-            me.pontosJogador1 = data[0][8];
-            me.pontosJogador2 = data[0][9];
-            me.refresh();
-            if (me.userId == data[0][6]) {
-              me.owner = true;
-            } else if (me.userId == data[0][7]){
-              me.owner = false;
+      if (this.winner == null) {
+        $.ajax({
+          url: "../backend/getData.php",
+          method: "GET",
+          dataType: "json",
+          success(data) {
+            if (me.clicks == 0) {
+              me.campos = JSON.parse(data[0][2]);
+              me.jogador = data[0][3];
+              me.pontosJogador1 = data[0][8];
+              me.pontosJogador2 = data[0][9];
+              me.winner_id = data[0][11];
+              me.winner = data[0][12];
+              me.refresh();
+              if (me.userId == data[0][6]) {
+                me.owner = true;
+              } else if (me.userId == data[0][7]){
+                me.owner = false;
+              }
             }
-          }
-        },
-        error(args) {
-          console.log(args);
-          toastr.error("Erro inesperado");
-        },
-      });
-
-      if (!this.won()) {
+          },
+          error(args) {
+            console.log(args);
+            toastr.error("Erro inesperado");
+          },
+        });
         setTimeout(function() {
           me.ping();
         }, 4000);
@@ -739,13 +740,11 @@ var Main = new Vue({
         url: "../backend/loadTable.php",
         method: "GET",
         dataType: "json",
-        data: {
-          active: 1,
-        },
         success(data) {
-          console.log(data);
           me.campos = JSON.parse(data[0][2]);
           me.jogador = data[0][3];
+          me.winner_id = data[0][11];
+          me.refresh();
         },
         error(args) {
           toastr.error(args.responseText);
@@ -758,14 +757,16 @@ var Main = new Vue({
       if (this.wXh == 10) {
         qtdPoints = 20;
       }
-      if (this.pontosJogador1 == qtdPoints && this.owner) {
-        this.vencedor = 1;
+      if (this.pontosJogador1 == qtdPoints) {
+        this.winner = this.jg1;
         this.winner_id = this.userId;
+        this.update();
         this.refresh();
         return true;
-      } else if (this.pontosJogador2 == qtdPoints && !this.owner) {
-        this.vencedor = 2;
+      } else if (this.pontosJogador2 == qtdPoints) {
+        this.winner = this.jg2;
         this.winner_id = this.userId;
+        this.update();
         this.refresh();
         return true;
       }
@@ -777,8 +778,5 @@ var Main = new Vue({
     this.getUserId();
     this.starts();
     this.ping();
-  },
-  updated() {
-    this.refresh();
   },
 });

@@ -1,24 +1,35 @@
 <?php
   session_start();
+  include 'connection.php';
 
   $user = (array)$_SESSION['user'];
   $userId = $user["id"];
 
   $board = $_POST["board"];
   $turn = $_POST["turn"];
-  $status = $_POST["status"];
-  $active = $_POST["active"];
   $jg1P = $_POST["player1_points"];
   $jg2P = $_POST["player2_points"];
+  $winner_id = $_POST["winner_id"];
+  $winner = $_POST["winner"];
   $gameId = $_SESSION["gameId"];
 
-  include 'connection.php';
-
-  $query = "UPDATE `jogos`
-    SET `board` = '$board', `active` = '$active',
-    `turn` = '$turn', `status` = '$status',
-    `player1_points` = '$jg1P', `player2_points` = '$jg2P'
-    WHERE `id` = '$gameId'";
+  if (array_key_exists("winner_id", $_POST)) {
+    if ($winner_id != null) {
+      $status = 1;
+      $active = 0;
+      $query = "UPDATE `jogos`
+        SET `board` = '$board', `active` = '$active',
+        `turn` = '$turn', `status` = '$status', `winner_id` = '$winner_id', `winner` = '$winner',
+        `player1_points` = '$jg1P', `player2_points` = '$jg2P'
+        WHERE `id` = '$gameId'";
+    } else {
+      $query = "UPDATE `jogos`
+        SET `board` = '$board', `active` = '$active',
+        `turn` = '$turn', `status` = '$status',
+        `player1_points` = '$jg1P', `player2_points` = '$jg2P'
+        WHERE `id` = '$gameId'";
+    }
+  }
 
   if (!$mysqli->query($query)) {
     die("Erro " . $mysqli->errno . $mysqli->error);

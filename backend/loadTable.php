@@ -4,7 +4,6 @@
 
   $user = (array)$_SESSION["user"];
   $userId = $user["id"];
-  $active = $_GET["active"];
   $gameId = $_SESSION["gameId"];
 
   $query = $mysqli->query("SELECT * FROM `jogos` WHERE id = '$gameId'");

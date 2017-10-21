@@ -18,6 +18,7 @@ $jogos = "CREATE TABLE IF NOT EXISTS `jogos` (
     player2_points int DEFAULT 0,
     active boolean DEFAULT false,
     winner_id bigint,
+    winner varchar(64),
     PRIMARY KEY (id)
   ) charset=utf8;";
 
