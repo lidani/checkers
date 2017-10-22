@@ -7,7 +7,5 @@
 
   session_destroy();
 
-  if (session_status() == 1) {
-    echo json_encode("Deslogado");
-  };
+  echo json_encode("Deslogado");
 ?>

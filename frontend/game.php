@@ -38,5 +38,11 @@
       </div>
     </div>
   </div>
-
-<?php } include './footerGame.php'; ?>
+  <?php include './footerGame.php'; ?>
+<?php } else {  ?>
+  <div class="card red lighten-2">
+    <div class="card-content">
+      <h5>Jogo não encontrado</h5>
+    </div>
+  </div>
+<?php } ?>

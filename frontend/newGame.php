@@ -1,29 +1,29 @@
 <?php
-session_start();
+	session_start();
 
-if (!isset($_SESSION["user"])) {
-	header("Location: index.php");
-	die();
-}
-include 'header.php';
+	if (!isset($_SESSION["user"])) {
+		header("Location: index.php");
+		die();
+	}
+	include 'header.php';
 ?>
 
-<div class="row">
-	<div class="card col s6 offset-s3">
-		<div class="card-content">
-			<h4>Criar novo jogo</h4>
-			<form v-on:submit="sendData($event)">
-			  <div class="input-field">
-			    <input type="text" v-model="title" id="nome" required/>
-			    <label for="nome">Título</label>
-			  </div>
-			  <div class="input-field">
-			    <input type="submit" value="Cadastrar" class="btn blue-grey darken-2" />
-			  </div>
-			</form>
+	<div class="row">
+		<div class="card col s6 offset-s3">
+			<div class="card-content">
+				<h4>Criar novo jogo</h4>
+				<form v-on:submit="sendData($event)">
+				  <div class="input-field">
+				    <input type="text" v-model="title" id="nome" required/>
+				    <label for="nome">Título</label>
+				  </div>
+				  <div class="input-field">
+				    <input type="submit" value="Cadastrar" class="btn blue-grey darken-2" />
+				  </div>
+				</form>
+			</div>
 		</div>
 	</div>
-</div>
 
 <?php include 'footer.php'; ?>
 

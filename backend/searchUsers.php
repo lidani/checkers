@@ -14,5 +14,5 @@
   } else {
     die("Nenhum registro encontrado.");
   }
-  
+
 ?>

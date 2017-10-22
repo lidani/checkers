@@ -709,7 +709,6 @@ var Main = new Vue({
           },
           error(args) {
             console.log(args);
-            toastr.error(args.responseText);
           },
         });
         setTimeout(function() {
@@ -745,7 +744,6 @@ var Main = new Vue({
           me.refresh();
         },
         error(args) {
-          toastr.error(args.responseText);
           console.warn(args);
         }
       });

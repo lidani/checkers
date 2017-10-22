@@ -119,7 +119,6 @@
       },
       addFriend(event, id, name) {
         event.preventDefault();
-
           const me = this;
           $.ajax({
             url: "../backend/addFriend.php",

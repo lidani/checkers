@@ -35,7 +35,7 @@
     UNIQUE(email),
     PRIMARY KEY (id)
   ) charset=utf8;";
-  
+
   if (!$mysqli->query($user)) {
     die("Error: (" . $mysqli->errno . ") " . $mysqli->error);
   }

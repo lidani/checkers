@@ -1,32 +1,33 @@
 <?php
-session_start();
-if (isset($_SESSION["user"])) {
-	header("Location: index.php");
-	die();
-}
+	session_start();
 
-include 'header.php';
+	if (isset($_SESSION["user"])) {
+		header("Location: index.php");
+		die();
+	}
+
+	include 'header.php';
 ?>
-<div class="row">
-	<div class="col s6 offset-s3">
-		<div class="card-panel">
-			<h4>Faça seu login</h4>
-			<form v-on:submit="doLogin($event)">
-        <div class="input-field">
-          <input type="text" v-model="email" id="email" required/>
-          <label for="email">E-mail ou apelido</label>
-        </div>
+	<div class="row">
+		<div class="col s6 offset-s3">
+			<div class="card-panel">
+				<h4>Faça seu login</h4>
+				<form v-on:submit="doLogin($event)">
 	        <div class="input-field">
-	          <input type="password" v-model="password" id="password" required/>
-	          <label for="password">Senha</label>
+	          <input type="text" v-model="email" id="email" required/>
+	          <label for="email">E-mail ou apelido</label>
 	        </div>
-        <div class="input-field">
-          <input type="submit" value="Login" class="btn blue-grey darken-2" />
-        </div>
-      </form>
-    </div>
+		        <div class="input-field">
+		          <input type="password" v-model="password" id="password" required/>
+		          <label for="password">Senha</label>
+		        </div>
+	        <div class="input-field">
+	          <input type="submit" value="Login" class="btn blue-grey darken-2" />
+	        </div>
+	      </form>
+	    </div>
+		</div>
 	</div>
-</div>
 
 <?php include 'footer.php'; ?>
 
