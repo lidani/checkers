@@ -1,3 +1,9 @@
+<?php
+  if (isset($_SESSION["user"])) {
+    $user = (array)$_SESSION["user"];
+    $userId = $user["id"];
+  }
+?>
 <!DOCTYPE html>
 <html>
   <head>
@@ -6,6 +12,7 @@
     <link rel="stylesheet" href="../libs/css/materialize.min.css">
     <link rel="stylesheet" href="../css/toastr.min.css">
     <link rel="stylesheet" href="../css/main.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   </head>
   <body>
     <nav class="blue-grey darken-2">
@@ -17,7 +24,7 @@
             <li><a href="cadastro.php">Register</a></li>
           <?php } else { ?>
             <li><a href="lobby.php">Lista dos jogos</a></li>
-            <li><a href="profile.php">Perfil</a></li>
+            <li><a href="<?php echo "profile.php?id=" . $userId; ?>">Perfil</a></li>
             <li><a v-on:click="doLogout($event)" href="#">Deslogar</a></li>
           <?php } ?>
         </ul>

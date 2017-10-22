@@ -13,6 +13,7 @@ var Main = new Vue({
     pontosJogador2: 0,
     winner: null,
     userId: null,
+    existsPlayer2: false,
     status: 0,
     winner_id: null,
     jg1: 'img/img.png',
@@ -24,7 +25,7 @@ var Main = new Vue({
   methods: {
     getIndex(i, j) {
       this.indexClick = [i, j];
-      if (!this.won()) {
+      if (!this.won() && this.existsPlayer2) {
         if (this.owner && this.jogador == this.jg1) {
           this.clicks ++;
           this.main();
@@ -349,11 +350,7 @@ var Main = new Vue({
         } else if (iA == i && jA == j) {
           this.clicks = 0;
           this.remover();
-        } else if (this.campos[iA][jA] == this.jogador) {
-          this.clicks = 1;
-          this.remover();
-          this.firstClick(i, j);
-        } else if (this.campos[iA][jA] == this.jg1d || this.campos[iA][jA] == this.jg2d) {
+        } else if (this.campos[iA][jA] == this.jogador || this.campos[iA][jA] == this.jg1d || this.campos[iA][jA] == this.jg2d) {
           this.clicks = 1;
           this.remover();
           this.firstClick(i, j);
@@ -664,11 +661,8 @@ var Main = new Vue({
       this.campos.splice(this.campos.length-1, 1);
     },
     update() {
-      console.log(this.winner_id);
       this.remover();
       const me = this;
-      if (this.winner == null) this.status = 0;
-      else this.status = 1;
       $.ajax({
         url: "../backend/insertInto.php",
         method: "POST",
@@ -708,12 +702,14 @@ var Main = new Vue({
                 me.owner = true;
               } else if (me.userId == data[0][7]){
                 me.owner = false;
+              } if (data[0][7] != null) {
+                me.existsPlayer2 = true;
               }
             }
           },
           error(args) {
             console.log(args);
-            toastr.error("Erro inesperado");
+            toastr.error(args.responseText);
           },
         });
         setTimeout(function() {
@@ -745,6 +741,7 @@ var Main = new Vue({
           me.campos = JSON.parse(data[0][2]);
           me.jogador = data[0][3];
           me.winner_id = data[0][11];
+          me.wXh = data[0][4];
           me.refresh();
         },
         error(args) {

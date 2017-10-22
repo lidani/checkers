@@ -11,6 +11,7 @@
     $_SESSION["gameId"] = $_GET["id"];
 
 ?>
+
 <h5 class="blue-text" v-if="jogador == jg2 &amp;&amp; winner_id == null">Vez do jogador Azul</h5>
   <h5 class="red-text" v-else-if="jogador == jg1 &amp;&amp; winner_id == null">Vez do jogador Vermelho</h5>
   <div v-if="winner_id == null" class="score">

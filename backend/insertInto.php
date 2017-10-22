@@ -2,9 +2,9 @@
   session_start();
   include 'connection.php';
 
-  $user = (array)$_SESSION['user'];
+  $user = (array) $_SESSION['user'];
   $userId = $user["id"];
-  $victories = $user["victories"];
+  $victories = (int) $user["victories"] + 1;
 
   $board = $_POST["board"];
   $turn = $_POST["turn"];
@@ -21,8 +21,11 @@
         `turn` = '$turn', `status` = 2, `winner_id` = '$winner_id', `winner` = '$winner',
         `player1_points` = '$jg1P', `player2_points` = '$jg2P'
         WHERE `id` = '$gameId'";
-      $winner = "UPDATE `users`
-        SET `victories` = $victories += 1";
+      $winner = $mysqli->query("UPDATE `users`
+        SET `victories` = $victories WHERE `id` = '$userId'");
+      if (!$winner) {
+        die("Error: (" . $mysqli->errno . ") " . $mysqli->error);
+      }
     } else {
       $query = "UPDATE `jogos`
         SET `board` = '$board', `active` = 1,
@@ -33,30 +36,28 @@
   }
 
   if (!$mysqli->query($query)) {
-    die("Erro " . $mysqli->errno . $mysqli->error);
+    die("Error: (" . $mysqli->errno . ") " . $mysqli->error);
   }
 
-  $resp = $mysqli->query(
-    "SELECT * FROM `jogos` WHERE `id` = '$gameId'"
-  );
+  $select = $mysqli->query("SELECT * FROM `jogos` WHERE `id` = '$gameId'");
 
-  if (!$resp){
-    die("erro: ". $mysqli->error);
+  if (!$select) {
+    die("Error: (" . $mysqli->errno . ") " . $mysqli->error);
   } else {
-    $res = $resp->fetch_all();
-    if (count($res) > 0) {
+    $result = $select->fetch_all();
+    if (count($result) > 0) {
       if ($userId != $res[0][6]) {
-        $update = $mysqli->query(
-          "UPDATE `jogos` SET `jogador2_id` = '$userId' WHERE `id` = '$gameId'"
-        );
+        $update = $mysqli->query("UPDATE `jogos` SET `player2_id` = '$userId' WHERE `id` = '$gameId'");
+        if (!$update) {
+          die("Error: (" . $mysqli->errno . ") " . $mysqli->error);
+        }
       }
-      $resp2 = $mysqli->query(
-        "SELECT * FROM `jogos` WHERE `id` = '$gameId'"
-      );
-      $res2 = $resp2->fetch_all();
-      if (count($res2) > 0) {
-        echo (json_encode($res2));
+      $select2 = $mysqli->query("SELECT * FROM `jogos` WHERE `id` = '$gameId'");
+      if (!$select2) {
+        die("Error: (" . $mysqli->errno . ") " . $mysqli->error);
       }
+      $result2 = $select2->fetch_all();
+      echo json_encode($result2);
     }
   }
 ?>

@@ -1,16 +1,13 @@
 <?php
-session_start();
+  session_start();
+  include 'connection.php';
 
-$gameId = $_SESSION["gameId"];
+  $gameId = $_SESSION["gameId"];
 
-include 'connection.php';
-
-$query = "SELECT * FROM `jogos` WHERE `id` = '$gameId'";
-$res = $mysqli->query($query);
-
-if (!$res) {
-  die("Erro ao query table jogos: " . $mysqli->error());
-}
-
-echo json_encode($res->fetch_all());
+  $select = $mysqli->query("SELECT * FROM `jogos` WHERE `id` = '$gameId'");
+  if (!$select) {
+    die("Error: (" . $mysqli->errno . ") " . $mysqli->error);
+  }
+  $result = $select->fetch_all();
+  echo json_encode($result);
 ?>

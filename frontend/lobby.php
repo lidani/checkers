@@ -27,13 +27,13 @@
           </thead>
           <tbody>
             <tr v-for="jogo in jogos">
-              <td>{{jogo[0]}}</td>
-              <td>{{jogo[1]}}</td>
-              <td>{{jogo[10]}}</td>
-              <td v-if="jogo[12] == null">nobody</td>
-              <td v-else-if="jogo[12] == 'img/img.png'">Vermelho</td>
+              <td>{{jogo[0][0]}}</td>
+              <td>{{jogo[0][1]}}</td>
+              <td>{{jogo[0][10]}}</td>
+              <td v-if="jogo[0][12] == null">nobody</td>
+              <td v-else-if="jogo[0][12] == 'img/img.png'">Vermelho</td>
               <td v-else>Azul</td>
-              <td><a :href="`game.php?id=${jogo[0]}`">Entrar</a></td>
+              <td><a :href="`game.php?id=${jogo[0][0]}`">Entrar</a></td>
             </tr>
           </tbody>
         </table>
@@ -65,8 +65,13 @@ var ListaDeJogos = new Vue({
         method: 'GET',
         dataType: 'json',
         success(data) {
-          me.jogos = data;
           console.log(data);
+          if (data.length > 0) {
+            if (data[0].length > 0) {
+              me.jogos = data[0];
+              console.log(me.jogos);
+            }
+          }
         },
         error(err) {
           console.warn(err);

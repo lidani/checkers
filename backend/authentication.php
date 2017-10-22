@@ -1,25 +1,28 @@
 <?php
-session_start();
-$email = $_POST['email'];
-$password = md5($_POST['password']);
+  session_start();
+  include 'connection.php';
 
-include 'connection.php';
+  $email = $_POST['email'];
+  $password = md5($_POST['password']);
 
-$sql = "SELECT * FROM `users` WHERE `email`='$email' AND `password`='$password'";
-$res = $mysqli->query($sql);
-if (!$res) {
-  die($mysqli->error."<br />Error querying testes table.<br />$sql");
-}
-$registros = $res->fetch_all();
-if (count($registros) > 0) {
-  $_SESSION['user'] = array(
-    'id' => $registros[0][0],
-    'name' => $registros[0][1],
-    'email' => $registros[0][2],
-    'victories' => $registros[0][4],
-  );
-  echo json_encode($_SESSION['user']);
-} else {
-  echo "E-mail ou senha inválidos";
-}
+  $select = $mysqli->query("SELECT * FROM `users` WHERE `email`='$email' AND `password`='$password' OR `nickname` = '$email'");
+  if (!$select) {
+    die("Error: (" . $mysqli->errno . ") " . $mysqli->error);
+  }
+  $result = $select->fetch_all();
+  if (count($result) > 0) {
+    $_SESSION['user'] = (object) [
+      'id' => $result[0][0],
+      'name' => $result[0][1],
+      'email' => $result[0][2],
+      'victories' => $result[0][4],
+      'nickname' => $result[0][6]
+    ];
+    $_SESSION['friends'] = (object) [
+      0 => [ 0 => json_decode($result[0][5])]
+    ];
+    echo json_encode("Usuário logado");
+  } else {
+    die("E-mail ou senha inválidos");
+  }
 ?>

@@ -12,6 +12,10 @@
 			    <input type="text" v-model="name" id="name" required/>
 			    <label for="name">Nome completo</label>
 			  </div>
+				<div class="input-field">
+			    <input type="text" v-model="nickname" id="nickname" required/>
+			    <label for="nickname">Apelido</label>
+			  </div>
 			  <div class="input-field">
 			    <input type="email" v-model="email" id="email" required/>
 			    <label for="email">E-mail</label>
@@ -42,6 +46,7 @@
 			email: '',
 			password: '',
 			cpassword: '',
+			nickname: '',
 		},
 		methods: {
 			doRegister(event) {
@@ -56,6 +61,7 @@
 							name: this.name,
 							email: this.email,
 							password: this.password,
+							nickname: this.nickname,
 						},
 						success(data) {
 							toastr.success(data);
@@ -63,7 +69,7 @@
 						},
 						error(args) {
 							console.error(args);
-							toastr.error(data);
+							toastr.error(args.responseText);
 						},
 					});
 				} else {

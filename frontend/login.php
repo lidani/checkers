@@ -13,8 +13,8 @@ include 'header.php';
 			<h4>Faça seu login</h4>
 			<form v-on:submit="doLogin($event)">
         <div class="input-field">
-          <input type="email" v-model="email" id="email" required/>
-          <label for="email">E-mail</label>
+          <input type="text" v-model="email" id="email" required/>
+          <label for="email">E-mail ou apelido</label>
         </div>
 	        <div class="input-field">
 	          <input type="password" v-model="password" id="password" required/>
@@ -50,7 +50,7 @@ include 'header.php';
 						password: me.password,
 					},
 					success(data) {
-						toastr.success("Logado");
+						toastr.success(data);
 						setTimeout(function(){ location.assign('index.php'); }, 500);
 					},
 					error(args) {
