@@ -17,11 +17,11 @@
 				<form v-on:submit="doLogin($event)">
 	        <div class="input-field">
 	          <input type="text" v-model="email" id="email" required/>
-	          <label for="email">E-mail ou apelido</label>
+	          <label id="lbl" for="email">E-mail ou apelido</label>
 	        </div>
 		        <div class="input-field">
 		          <input type="password" v-model="password" id="password" required/>
-		          <label for="password">Senha</label>
+		          <label id="lbl" for="password">Senha</label>
 		        </div>
 	        <div class="input-field">
 	          <input type="submit" value="Login" class="btn blue-grey darken-2" />

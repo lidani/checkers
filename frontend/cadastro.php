@@ -4,35 +4,39 @@
 ?>
 
 <div class="row" id="register">
-	<div class="col s6 offset-s3">
+	<h4>Faça seu cadastro</h4>
+	<div class="col s12 m4 l2">
+	</div>
+	<div class="col s12 m4 l8">
 		<div class="card-panel">
-			<h4>Faça seu cadastro</h4>
 			<form v-on:submit="doRegister($event)">
 			  <div class="input-field">
 			    <input type="text" v-model="name" id="name" required/>
-			    <label for="name">Nome completo</label>
+			    <label id="lbl" for="name">Nome completo</label>
 			  </div>
 				<div class="input-field">
 			    <input type="text" v-model="nickname" id="nickname" required/>
-			    <label for="nickname">Apelido</label>
+			    <label id="lbl" for="nickname">Apelido</label>
 			  </div>
 			  <div class="input-field">
 			    <input type="email" v-model="email" id="email" required/>
-			    <label for="email">E-mail</label>
+			    <label id="lbl" for="email">E-mail</label>
 			  </div>
 			  <div class="input-field">
 			    <input type="password" v-model="password" id="password" required/>
-			    <label for="password">Senha</label>
+			    <label id="lbl" for="password">Senha</label>
 			  </div>
 			  <div class="input-field">
 			    <input type="password" v-model="cpassword" id="cpassword" required/>
-			    <label for="cpassword">Confirme a senha</label>
+			    <label id="lbl" for="cpassword">Confirme a senha</label>
 			  </div>
 			  <div class="input-field">
 			    <input type="submit" value="Cadastrar" class="btn blue-grey darken-2" />
 			  </div>
 			</form>
 		</div>
+	</div>
+	<div class="col s12 m4 l2">
 	</div>
 </dvi>
 
@@ -64,14 +68,16 @@
 							nickname: this.nickname,
 						},
 						success(data) {
-							location.assign("login.php");
+							toastr.success(data);
+							setTimeout(function() { location.assign("login.php"); }, 500);
 						},
 						error(args) {
 							console.error(args);
+							toastr.error(args.responseText);
 						},
 					});
 				} else {
-					alert("Senhas diferentes");
+					toastr.warn("Senhas diferentes");
 				}
 			}
 		}

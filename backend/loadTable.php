@@ -26,14 +26,16 @@
             die("Error: (" . $mysqli->errno . ") " . $mysqli->error);
           }
         }
+      } else {
+        //
       }
-      $query2 = $mysqli->query("SELECT * FROM `jogos` WHERE id = '$gameId'");
-      $res2 = $query2->fetch_all();
-      if (!$res2) {
-        die("Error: (" . $mysqli->errno . ") " . $mysqli->error);
-      }
-      echo json_encode($res2);
     }
+    $query2 = $mysqli->query("SELECT * FROM `jogos` WHERE id = '$gameId'");
+    $res2 = $query2->fetch_all();
+    if (!$res2) {
+      die("Error: (" . $mysqli->errno . ") " . $mysqli->error);
+    }
+    echo json_encode($res2);
   } else {
     die ("Não foram encontrados registros.");
   }

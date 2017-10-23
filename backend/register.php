@@ -7,8 +7,8 @@
   $password = md5($_POST["password"]);
   $nickname = $_POST["nickname"];
 
-  $query = "INSERT INTO `users` (id, name, email, password, nickname) ".
-    "VALUES (NULL, ?, ?, ?, ?)";
+  $query = "INSERT INTO `users` (id, name, email, password, nickname)
+  VALUES (NULL, ?, ?, ?, ?)";
   $stmt = $mysqli->prepare($query);
   if (!$stmt) {
       die("Prepare failed: (" . $mysqli->errno . ") " . $mysqli->error);
@@ -19,7 +19,7 @@
 
   if (!$stmt->execute()) {
     if ($stmt->errno == 1062) {
-      die("Apelido ou E-mail indisponíveis");
+      die("Apelido ou E-mail já cadastrados");
     } else {
       die("Execute failed: (" . $stmt->errno . ") " . $stmt->error);
     }

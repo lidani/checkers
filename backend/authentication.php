@@ -19,7 +19,7 @@
       'nickname' => $result[0][6]
     ];
     if ($result[0][5] != null) {
-      $_SESSION['friends'] = (array) [
+      $_SESSION['friends'] = [
         0 => json_decode($result[0][5])
       ];
     }

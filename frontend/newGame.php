@@ -21,7 +21,7 @@
 				  </div>
 					<div class="input-field">
 				    <select id="casas">
-				      <option value="" disabled selected>Board size</option>
+				      <option value="8" disabled selected>Board size</option>
 				      <option value="8">64 casas</option>
 				      <option value="10">100 casas</option>
 				    </select>
@@ -51,7 +51,7 @@ var newGame = new Vue({
 		sendData(event){
 			event.preventDefault();
 			const me = this;
-			wXh = $("#casas option:selected" ).val();
+			wXh = $("#casas option:selected").val();
 			board = [];
 			board = this.geraTab();
 			$.ajax({
@@ -74,7 +74,7 @@ var newGame = new Vue({
 		},
 		geraTab() {
 			this.board = [];
-			var wXh = $("#casas option:selected" ).val();
+			var wXh = $("#casas option:selected").val();
       for (var i = 0; i < wXh; i++) {
         var list = [];
         for (var j = 0; j < wXh; j++) {

@@ -14,6 +14,7 @@ var Main = new Vue({
     winner: null,
     userId: null,
     userName: null,
+    guest: false,
     existsPlayer2: false,
     status: 0,
     winner_id: null,
@@ -26,7 +27,7 @@ var Main = new Vue({
   methods: {
     getIndex(i, j) {
       this.indexClick = [i, j];
-      if (!this.won() && this.existsPlayer2) {
+      if (!this.won() && this.existsPlayer2 && !this.guest) {
         if (this.owner && this.jogador == this.jg1) {
           this.clicks ++;
           this.main();
@@ -702,7 +703,7 @@ var Main = new Vue({
               me.refresh();
               if (me.userId == data[0][6]) {
                 me.owner = true;
-              } else if (me.userId == data[0][7]){
+              } else if (me.userId == data[0][7]) {
                 me.owner = false;
               } if (data[0][7] != null) {
                 me.existsPlayer2 = true;
@@ -712,7 +713,7 @@ var Main = new Vue({
             }
           },
           error(args) {
-            console.log(args);
+            console.error(args);
           },
         });
         setTimeout(function() {
@@ -727,7 +728,6 @@ var Main = new Vue({
         method: "GET",
         dataType: "json",
         success(data) {
-          console.log(data);
           me.userId = data[0];
           me.userName = data[1];
         },
@@ -747,11 +747,15 @@ var Main = new Vue({
           me.jogador = data[0][3];
           me.winner_id = data[0][11];
           me.wXh = data[0][4];
-          me.userName = data[0][14];
+          if (data[0][6] != null && data[0][7] != null) {
+            if (data[0][6] != me.userId && data[0][7] != me.userId) {
+              me.guest = true;
+            }
+          }
           me.refresh();
         },
         error(args) {
-          console.warn(args);
+          console.error(args);
         }
       });
     },

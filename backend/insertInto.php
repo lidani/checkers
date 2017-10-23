@@ -12,15 +12,16 @@
   $jg2P = $_POST["player2_points"];
   $winner_id = $_POST["winner_id"];
   $winner = $_POST["winner"];
-  $gameId = $_SESSION["gameId"];
   $userName = $_POST["userName"];
+  $gameId = $_SESSION["gameId"];
 
   if (array_key_exists("winner_id", $_POST)) {
     if ($winner_id != null) {
       $query = "UPDATE `jogos`
         SET `board` = '$board', `active` = 0,
-        `turn` = '$turn', `status` = 2, `winner_id` = '$winner_id', `winner` = '$winner', `winner_name` = '$userName'
-        `player1_points` = '$jg1P', `player2_points` = '$jg2P'
+        `turn` = '$turn', `status` = 2, `winner_id` = '$winner_id',
+        `winner` = '$winner', `winner_name` = '$userName',
+        `player1_points` = $jg1P, `player2_points` = $jg2P
         WHERE `id` = '$gameId'";
       $winner = $mysqli->query("UPDATE `users`
         SET `victories` = $victories WHERE `id` = '$userId'");

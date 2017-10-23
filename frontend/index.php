@@ -18,7 +18,7 @@
     <div class="modal-content">
       <div class="input-field">
         <input type="text" v-model="nameOfFriend" id="nameOfFriend" required/>
-        <label for="nameOfFriend">Nome completo ou apelido do amigo</label>
+        <label id="lbl" for="nameOfFriend">Nome completo ou apelido do amigo</label>
       </div>
       <div class="input-field">
         <a href="#" class="btn blue-grey darken-2" v-on:click="search($event)">Pesquisar</a>
@@ -34,7 +34,7 @@
           <tbody>
             <tr v-for="result in query">
               <td>{{result[1]}}</td>
-              <td><a href="#" v-on:click="addFriend($event, result[0], result[1])">{{result[0]}} Adicionar</a></td>
+              <td><a href="#" v-on:click="addFriend($event, result[0], result[1])">Adicionar</a></td>
             </tr>
           </tbody>
         </table>
@@ -47,8 +47,8 @@
 
   <ul id="friends" class="dropdown-content">
     <li><a class="modal-trigger" href="#addFriend"><i class="material-icons center">add</i></a></li>
-    <li v-for="friend, i in friends">
-      <a :href="`profile.php?id=${friend[0].id}`">{{friend[0].name}}</a>
+    <li v-for="friend in friends">
+      <a :href="`profile.php?id=${friend[0]}`">{{friend[1]}}</a>
     </li>
   </ul>
 
@@ -60,10 +60,6 @@
 <?php include 'footer.php'; ?>
 
 <script type="text/javascript">
-   $(document).ready(function(){
-     $('.modal').modal();
-   });
-
    var Profile = new Vue({
     el: "#profile",
     data: {
@@ -81,15 +77,14 @@
         method: "GET",
         dataType: "json",
         success(data) {
-          console.log(data);
           me.user = data[0];
           if (data[0][5] != null) {
             me.friends = JSON.parse(data[0][5]);
-            console.log(me.friends);
           }
         },
         error(args) {
           console.error(args);
+          toastr.error(args.responseText);
         }
       });
     },
@@ -129,10 +124,11 @@
             friendName: name
           },
           success(data) {
-            console.log(data);
-            // setTimeout(function() { location.assign("index.php") }, 500);
+            toastr.success(data);
+            setTimeout(function() { location.assign("index.php") }, 500);
           },
           error(args) {
+            toastr.error(args.responseText);
             console.error(args);
           }
         });
