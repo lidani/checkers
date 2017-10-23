@@ -8,29 +8,39 @@
   $friendId = $_POST["friendId"];
   $friendName = $_POST["friendName"];
 
-  $friends = $_SESSION["friends"];
-  $friendList = (array) $friends->{'0'}[0];
+  $friends = (object)$_SESSION["friends"];
 
-  if ($friendList != null) {
-    for ($i=0; $i < count($friends->{'0'}[0]); $i++) {
-      if ($friendId == $friendList[$i]->{'0'}->{'id'}) {
-        die("Você já adicionou esse amigo.");
-        $nextStack = false;
-        break;
-      } else {
-        $nextStack = true;
-      }
-    }
-  } else {
-    $nextStack = true;
+  $friendList = [];
+
+  $friends = json_encode($friends);
+
+  echo($friends);
+
+
+  if (count($friends) > 1) {
+    array_push($friendList, $friends);
   }
 
+
+  // if (count($friendList) > 0) {
+  //   for ($i=0; $i < count($friends->{'0'}[0]); $i++) {
+  //     if ($friendId == $friendList[$i]->{'0'}->{'id'}) {
+  //       die("Você já adicionou esse amigo.");
+  //       $nextStack = false;
+  //       break;
+  //     } else {
+  //       $nextStack = true;
+  //     }
+  //   }
+  // } else {
+  //   $nextStack = true;
+  // }
+  //
+  $nextStack = true;
   if ($nextStack) {
-    $friend = (object) [
-      0 => [
-        'id' => $friendId,
-        'name' => $friendName
-      ]
+    $friend = (array) [
+      'id' => $friendId,
+      'name' => $friendName
     ];
     array_push($friendList, $friend);
     $newFriend = json_encode($friendList);
@@ -44,8 +54,8 @@
     }
     $result = $select->fetch_all();
     if (count($result) > 0) {
-      $_SESSION['friends'] = (object) [
-        0 => [ 0 => json_decode($result[0][5])]
+      $_SESSION['friends'] = (array) [
+        0 => json_decode($result[0][5])
       ];
     }
     echo json_encode("Amigo adicionado");

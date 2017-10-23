@@ -2,9 +2,12 @@
 
 <script type="text/javascript" src="../libs/js/jquery-3.2.1.min.js"></script>
 <script type="text/javascript" src="../libs/js/materialize.min.js"></script>
-<script type="text/javascript" src="../js/toastr.min.js"></script>
 <script type="text/javascript" src="../libs/js/vue.js"></script>
 <script type="text/javascript">
+  $(document).ready(function() {
+    $(".button-collapse").sideNav();
+    $('select').material_select();
+  });
   var Logout = new Vue({
     el: "#logout",
     data: {
@@ -18,11 +21,10 @@
           method: "POST",
           dataType: "json",
           success(data) {
-            toastr.success(data);
-            setTimeout(function() { location.assign("login.php"); }, 500);
+            location.assign("login.php");
           },
           error(args) {
-            toastr.error(args.responseText);
+            console.error(args.responseText);
           }
         });
       }

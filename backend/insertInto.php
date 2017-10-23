@@ -13,12 +13,13 @@
   $winner_id = $_POST["winner_id"];
   $winner = $_POST["winner"];
   $gameId = $_SESSION["gameId"];
+  $userName = $_POST["userName"];
 
   if (array_key_exists("winner_id", $_POST)) {
     if ($winner_id != null) {
       $query = "UPDATE `jogos`
         SET `board` = '$board', `active` = 0,
-        `turn` = '$turn', `status` = 2, `winner_id` = '$winner_id', `winner` = '$winner',
+        `turn` = '$turn', `status` = 2, `winner_id` = '$winner_id', `winner` = '$winner', `winner_name` = '$userName'
         `player1_points` = '$jg1P', `player2_points` = '$jg2P'
         WHERE `id` = '$gameId'";
       $winner = $mysqli->query("UPDATE `users`
@@ -46,7 +47,7 @@
   } else {
     $result = $select->fetch_all();
     if (count($result) > 0) {
-      if ($userId != $res[0][6]) {
+      if ($userId != $result[0][6]) {
         $update = $mysqli->query("UPDATE `jogos` SET `player2_id` = '$userId' WHERE `id` = '$gameId'");
         if (!$update) {
           die("Error: (" . $mysqli->errno . ") " . $mysqli->error);

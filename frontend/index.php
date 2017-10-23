@@ -52,7 +52,7 @@
     </li>
   </ul>
 
-  <a class="btn blue-grey darken-2" href="newGame.php">Criar um jogo</a>
+  <a class="btn blue-grey darken-2" href="newGame.php">Criar um jogo</a> <br><br>
   <a class="btn blue-grey darken-2" href="lobby.php">Lista de jogos</a><br><br><hr><br>
   <a class="dropdown-button btn-large blue-grey darken-2" href="#" data-activates="friends">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Amigos&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
 </div>
@@ -64,7 +64,7 @@
      $('.modal').modal();
    });
 
-  var Profile = new Vue({
+   var Profile = new Vue({
     el: "#profile",
     data: {
       user: [],
@@ -119,25 +119,24 @@
       },
       addFriend(event, id, name) {
         event.preventDefault();
-          const me = this;
-          $.ajax({
-            url: "../backend/addFriend.php",
-            method: "POST",
-            dataType: "json",
-            data: {
-              friendId: id,
-              friendName: name
-            },
-            success(data) {
-              toastr.success(data);
-              setTimeout(function() { location.assign("index.php") }, 500);
-            },
-            error(args) {
-              toastr.error(args.responseText);
-              console.error(args);
-            }
-          });
-        }
+        const me = this;
+        $.ajax({
+          url: "../backend/addFriend.php",
+          method: "POST",
+          dataType: "json",
+          data: {
+            friendId: id,
+            friendName: name
+          },
+          success(data) {
+            console.log(data);
+            // setTimeout(function() { location.assign("index.php") }, 500);
+          },
+          error(args) {
+            console.error(args);
+          }
+        });
+      }
     },
   });
 </script>

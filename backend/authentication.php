@@ -18,9 +18,11 @@
       'victories' => $result[0][4],
       'nickname' => $result[0][6]
     ];
-    $_SESSION['friends'] = (object) [
-      0 => [ 0 => json_decode($result[0][5])]
-    ];
+    if ($result[0][5] != null) {
+      $_SESSION['friends'] = (array) [
+        0 => json_decode($result[0][5])
+      ];
+    }
     echo json_encode("Usuário logado");
   } else {
     die("E-mail ou senha inválidos");

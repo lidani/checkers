@@ -20,6 +20,7 @@
       winner_id bigint,
       winner varchar(64),
       creation varchar(128),
+      winner_name varchar(255),
       PRIMARY KEY (id)
     ) charset=utf8;";
 

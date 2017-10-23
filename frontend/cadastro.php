@@ -64,16 +64,14 @@
 							nickname: this.nickname,
 						},
 						success(data) {
-							toastr.success(data);
-							setTimeout(function() { location.assign("login.php"); }, 500);
+							location.assign("login.php");
 						},
 						error(args) {
 							console.error(args);
-							toastr.error(args.responseText);
 						},
 					});
 				} else {
-					toastr.error("As senhas estão diferentes");
+					alert("Senhas diferentes");
 				}
 			}
 		}

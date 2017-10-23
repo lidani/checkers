@@ -8,10 +8,12 @@
 
 	include 'header.php';
 ?>
+<h4>Faça seu login</h4>
 	<div class="row">
-		<div class="col s6 offset-s3">
+		<div class="col s12 m4 l2">
+		</div>
+		<div class="col s12 m4 l8">
 			<div class="card-panel">
-				<h4>Faça seu login</h4>
 				<form v-on:submit="doLogin($event)">
 	        <div class="input-field">
 	          <input type="text" v-model="email" id="email" required/>
@@ -26,6 +28,8 @@
 	        </div>
 	      </form>
 	    </div>
+		</div>
+		<div class="col s12 m4 l2">
 		</div>
 	</div>
 
@@ -51,12 +55,10 @@
 						password: me.password,
 					},
 					success(data) {
-						toastr.success(data);
-						setTimeout(function(){ location.assign('index.php'); }, 500);
+						location.assign('index.php');
 					},
 					error(args) {
 						console.error(args);
-						toastr.error(args.responseText);
 					}
 				});
 			},

@@ -34,3 +34,19 @@ img {
 .score {
   font-size: 18px;
 }
+
+.input-field input:focus + label {
+	color: #000 !important;
+}
+#lbl {
+	font-size: 16px;
+}
+.input-field input:focus {
+	border-bottom: 1px solid #455a64 !important;
+	box-shadow: 0 1px 0 0 #455a64 !important;
+	font-size: 16px;
+}
+
+.dropdown-content li > a, .dropdown-content li > span {
+    color: #263238;
+}

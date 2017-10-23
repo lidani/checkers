@@ -8,20 +8,31 @@
 	include 'header.php';
 ?>
 
+<h4>Criar novo jogo</h4>
 	<div class="row">
-		<div class="card col s6 offset-s3">
-			<div class="card-content">
-				<h4>Criar novo jogo</h4>
+		<div class="col s12 m4 l2">
+		</div>
+		<div class="col s12 m4 l8">
+			<div class="card-panel">
 				<form v-on:submit="sendData($event)">
 				  <div class="input-field">
 				    <input type="text" v-model="title" id="nome" required/>
-				    <label for="nome">Título</label>
+				    <label id="lbl" for="nome">Título</label>
 				  </div>
+					<div class="input-field">
+				    <select id="casas">
+				      <option value="" disabled selected>Board size</option>
+				      <option value="8">64 casas</option>
+				      <option value="10">100 casas</option>
+				    </select>
+  				</div>
 				  <div class="input-field">
 				    <input type="submit" value="Cadastrar" class="btn blue-grey darken-2" />
 				  </div>
 				</form>
 			</div>
+		</div>
+		<div class="col s12 m4 l2">
 		</div>
 	</div>
 
@@ -32,42 +43,41 @@ var newGame = new Vue({
 	el: "#app",
 	data: {
 		title: '',
-		wXh: 8,
 		board: [],
 		jg1: 'img/img.png',
     jg2: 'img/img2.png',
-	},
-	created() {
-		this.geraTab();
 	},
 	methods: {
 		sendData(event){
 			event.preventDefault();
 			const me = this;
+			wXh = $("#casas option:selected" ).val();
+			board = [];
+			board = this.geraTab();
 			$.ajax({
 				url: "../backend/NewGame.php",
 				method: "POST",
 				dataType: "json",
 				data: {
 					title: me.title,
-					board: JSON.stringify(me.board),
+					board: JSON.stringify(board),
 					turn: me.jg1,
+					size: wXh,
 				},
 				success(data) {
-					console.log(data);
-					toastr.success(data);
-					setTimeout(function() { location.assign("lobby.php"); }, 500);
+					location.assign("lobby.php");
 				},
 				error(args) {
-					toastr.error(args.responseText);
-					console.warn("erro", args);
+					console.error(args);
 				},
 			});
 		},
 		geraTab() {
-      for (var i = 0; i < this.wXh; i++) {
+			this.board = [];
+			var wXh = $("#casas option:selected" ).val();
+      for (var i = 0; i < wXh; i++) {
         var list = [];
-        for (var j = 0; j < this.wXh; j++) {
+        for (var j = 0; j < wXh; j++) {
           list.push("img/fundo.png");
         }
         this.board.push(list);
@@ -105,6 +115,7 @@ var newGame = new Vue({
           }
         }
       }
+			return this.board;
     },
 	},
 });

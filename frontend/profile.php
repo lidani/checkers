@@ -6,21 +6,29 @@
 <?php
   if (array_key_exists("id", $_GET)) { $id = $_GET["id"]; ?>
     <div id="user_profile" class="row">
-      <div class="card col s6 offset-s3" v-if="user.length > 0">
+      <div class="col s12 m4 l2">
+  		</div>
+      <div class="card col s12 m4 l8" v-if="user.length > 0">
         <div class="card-content">
           <h5 class="left-align">Nome: {{user[1]}}</h5>
           <h5 class="left-align">E-mail: {{user[2]}}</h5>
           <h5 class="left-align">Vitórias: {{user[4]}}</h5>
         </div>
       </div>
+      <div class="col s12 m4 l2">
+  		</div>
 
 <?php } else { ?>
 
-      <div v-else class="card red lighten-2">
+      <div class="col s12 m4 l2">
+      </div>
+      <div v-else class="card col s12 m4 l8 red lighten-2">
         <div class="card-content">
           <h5>Usuário não encontrado</h5>
         </div>
       </div>
+      <div class="col s12 m4 l2">
+  		</div>
     </div>
 <?php } ?>
 

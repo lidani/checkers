@@ -13,6 +13,7 @@ var Main = new Vue({
     pontosJogador2: 0,
     winner: null,
     userId: null,
+    userName: null,
     existsPlayer2: false,
     status: 0,
     winner_id: null,
@@ -674,6 +675,7 @@ var Main = new Vue({
           player2_points: this.pontosJogador2,
           winner_id: this.winner_id,
           winner: this.winner,
+          userName: this.userName,
         },
         success(data) {
         },
@@ -704,6 +706,8 @@ var Main = new Vue({
                 me.owner = false;
               } if (data[0][7] != null) {
                 me.existsPlayer2 = true;
+              } else if (data[0][7] == null) {
+                me.starts();
               }
             }
           },
@@ -723,7 +727,9 @@ var Main = new Vue({
         method: "GET",
         dataType: "json",
         success(data) {
-          me.userId = data;
+          console.log(data);
+          me.userId = data[0];
+          me.userName = data[1];
         },
         error(args) {
           console.error(args);
@@ -741,6 +747,7 @@ var Main = new Vue({
           me.jogador = data[0][3];
           me.winner_id = data[0][11];
           me.wXh = data[0][4];
+          me.userName = data[0][14];
           me.refresh();
         },
         error(args) {
