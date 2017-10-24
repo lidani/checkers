@@ -16,7 +16,7 @@
   </div>
   <div class="col s12 m4 l8">
     <div class="card-panel z-depth-5">
-      <div class="" v-if="myGames.length > 0 || friendsGames.length > 0 || gamesIAlreadyPlayed.length > 0">
+      <div class="" v-if="myGames.length > 0 || friendsGames.length > 0 || gamesIAlreadyPlayed.length > 0 || gamesFinalized.length > 0">
         <table>
           <thead>
             <tr>

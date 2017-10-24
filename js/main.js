@@ -711,14 +711,14 @@ var Main = new Vue({
                 me.starts();
               }
             }
+            setTimeout(function() {
+              me.ping();
+            }, 500);
           },
           error(args) {
             console.error(args);
           },
         });
-        setTimeout(function() {
-          me.ping();
-        }, 4000);
       }
     },
     getUserId() {
