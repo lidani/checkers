@@ -13,10 +13,11 @@
   $winner_id = $_POST["winner_id"];
   $winner = $_POST["winner"];
   $userName = $_POST["userName"];
+  $active = $_POST["active"];
   $gameId = $_SESSION["gameId"];
 
   if (array_key_exists("winner_id", $_POST)) {
-    if ($winner_id != null) {
+    if ($winner_id != null && $active == 1) {
       $query = "UPDATE `jogos`
         SET `board` = '$board', `active` = 0,
         `turn` = '$turn', `status` = 2, `winner_id` = '$winner_id',

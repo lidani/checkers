@@ -104,6 +104,7 @@ var ListaDeJogos = new Vue({
         method: 'GET',
         dataType: 'json',
         success(data) {
+          console.log(data);
           if (data[0].length > 0) {
             me.myGames = data[0][0];
           }

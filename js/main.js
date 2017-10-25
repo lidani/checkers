@@ -677,6 +677,7 @@ var Main = new Vue({
           winner_id: this.winner_id,
           winner: this.winner,
           userName: this.userName,
+          active: this.active,
         },
         success(data) {
         },
@@ -700,6 +701,7 @@ var Main = new Vue({
               me.pontosJogador2 = data[0][9];
               me.winner_id = data[0][11];
               me.winner = data[0][12];
+              me.active = data[0][10];
               me.refresh();
               if (me.userId == data[0][6]) {
                 me.owner = true;
@@ -711,9 +713,9 @@ var Main = new Vue({
                 me.starts();
               }
             }
-            setTimeout(function() {
+            setTimeout(function () {
               me.ping();
-            }, 500);
+            }, 100);
           },
           error(args) {
             console.error(args);
@@ -742,6 +744,9 @@ var Main = new Vue({
         url: "../backend/loadTable.php",
         method: "GET",
         dataType: "json",
+        data: {
+          active: this.active,
+        },
         success(data) {
           me.campos = JSON.parse(data[0][2]);
           me.jogador = data[0][3];
