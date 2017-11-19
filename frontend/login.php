@@ -8,7 +8,7 @@
 
 	include 'header.php';
 ?>
-<h4>Faça seu login</h4>
+<h4 class="center">Faça seu login</h4>
 	<div class="row">
 		<div class="col s12 m4 l2">
 		</div>

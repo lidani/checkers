@@ -15,26 +15,36 @@
   $userName = $_POST["userName"];
   $active = $_POST["active"];
   $gameId = $_SESSION["gameId"];
+  $empate = $_POST["empate"];
 
   if (array_key_exists("winner_id", $_POST)) {
-    if ($winner_id != null && $active == 1) {
-      $query = "UPDATE `jogos`
+    if ($active == 1) {
+      if ($winner_id != null) {
+        $query = "UPDATE `jogos`
         SET `board` = '$board', `active` = 0,
-        `turn` = '$turn', `status` = 2, `winner_id` = '$winner_id',
+        `turn` = '$turn', `status` = 1, `winner_id` = '$winner_id',
         `winner` = '$winner', `winner_name` = '$userName',
         `player1_points` = $jg1P, `player2_points` = $jg2P
         WHERE `id` = '$gameId'";
-      $winner = $mysqli->query("UPDATE `users`
-        SET `victories` = $victories WHERE `id` = '$userId'");
-      if (!$winner) {
-        die("Error: (" . $mysqli->errno . ") " . $mysqli->error);
+        $winner = $mysqli->query("UPDATE `users`
+          SET `victories` = $victories WHERE `id` = '$userId'");
+        if (!$winner) {
+          die("Error: (" . $mysqli->errno . ") " . $mysqli->error);
+        }
       }
-    } else {
-      $query = "UPDATE `jogos`
+      if ($empate == 1) {
+        $query = "UPDATE `jogos`
+        SET `board` = '$board', `active` = 0,
+        `turn` = '$turn', `status` = 2, `player1_points` = $jg1P,
+        `player2_points` = $jg2P, `winner` = -1
+        WHERE `id` = '$gameId'";
+      } else {
+        $query = "UPDATE `jogos`
         SET `board` = '$board', `active` = 1,
-        `turn` = '$turn', `status` = 1,
+        `turn` = '$turn', `status` = 0,
         `player1_points` = '$jg1P', `player2_points` = '$jg2P'
         WHERE `id` = '$gameId'";
+      }
     }
   }
 

@@ -26,7 +26,7 @@
     }
   }
 
-  $selectFinalized = $mysqli->query("SELECT * FROM `jogos` WHERE `player1_id` = '$userId' AND `status` = 2");
+  $selectFinalized = $mysqli->query("SELECT * FROM `jogos` WHERE `player1_id` = '$userId' AND `active` = 0 AND `status` = 1");
   $resultFinalized = $selectFinalized->fetch_all();
   if (!$selectFinalized) {
     die("Error: (" . $mysqli->errno . ") " . $mysqli->error);
@@ -35,7 +35,7 @@
     array_push($gamesFinalized, $resultFinalized);
   }
 
-  $selectMy = $mysqli->query("SELECT * FROM `jogos` WHERE `player1_id` = '$userId' AND `status` = 0");
+  $selectMy = $mysqli->query("SELECT * FROM `jogos` WHERE `player1_id` = '$userId' AND `status` = 0 OR `status` = 1");
   if (!$selectMy) {
     die("Error: (" . $mysqli->errno . ") " . $mysqli->error);
   }

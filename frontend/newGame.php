@@ -8,7 +8,7 @@
 	include 'header.php';
 ?>
 
-<h4>Criar novo jogo</h4>
+<h4 class="center">Criar novo jogo</h4>
 	<div class="row">
 		<div class="col s12 m4 l2">
 		</div>

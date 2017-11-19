@@ -9,7 +9,7 @@
   $user = (array)$_SESSION["user"];
 ?>
 
-<div id="profile">
+<div id="profile" class="center">
   <h5>Seja bem vindo {{user[1]}}</h5>
   <h5>Você possui {{user[4]}} vitórias.</h5>
   <br />

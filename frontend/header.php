@@ -46,4 +46,4 @@
   </ul>
 </div>
     <br>
-    <div id="app" class="container center">
+    <div id="app" class="container">

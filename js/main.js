@@ -27,7 +27,7 @@ var Main = new Vue({
   methods: {
     getIndex(i, j) {
       this.indexClick = [i, j];
-      if (!this.won() && this.existsPlayer2 && !this.guest) {
+      if (!this.won() && this.existsPlayer2 && !this.guest && (this.isPossible(i, j) || this.clicks == 1)) {
         if (this.owner && this.jogador == this.jg1) {
           this.clicks ++;
           this.main();
@@ -37,6 +37,9 @@ var Main = new Vue({
           this.main();
           this.refresh();
         }
+      } else if (!this.isPossible(i, j)) {
+        this.clicks = 0;
+        this.remover();
       }
     },
     main() {
@@ -381,6 +384,7 @@ var Main = new Vue({
     },
     isPossible_up(i, j, j1, j2) {
       var inimigoD = this.changeOpponent(j1);
+      let stacks = 0;
       if (i >= 0 && i <= this.campos.length -1 && j >= 0 && j <= this.campos.length -1) {
         if (this.campos[i][j] == j1) {
           if ((i-2 >= 0 && j-2 >= 0)
@@ -388,30 +392,36 @@ var Main = new Vue({
             || this.campos[i -1][j -1] == inimigoD)
             && this.campos[i -2][j -2] == "img/fundo.png") {
             this.campos[i -2][j -2] = "img/fundoP.png";
+            stacks ++;
           }
           if ((i-2 >= 0 && j+2 <= this.campos.length -1)
             && (this.campos[i -1][j +1] == j2
             || this.campos[i -1][j +1] == inimigoD)
             && this.campos[i -2][j +2] == "img/fundo.png") {
             this.campos[i -2][j +2] = "img/fundoP.png";
+            stacks ++;
           }
           if ((i-1 >= 0 && j-1 >= 0)
             && this.campos[i -1][j -1] == "img/fundo.png") {
             this.campos[i -1][j -1] = "img/fundoP.png";
+            stacks ++;
           }
           if ((i-1 >= 0 && j+1 <= this.campos.length -1)
             && this.campos[i -1][j +1] == "img/fundo.png") {
             this.campos[i -1][j +1] = "img/fundoP.png";
+            stacks ++;
           }
+          if (stacks > 0) return true;
+          else return false;
         } else {
           this.clicks = 0;
           this.remover();
         }
-        return false;
       }
     },
     isPossible_down(i, j, j1, j2) {
       var inimigoD = this.changeOpponent(j1);
+      let stacks = 0;
       if (i >= 0 && i <= this.campos.length -1 && j >= 0 && j <= this.campos.length -1) {
         if (this.campos[i][j] == j1) {
           if ((i+2 <= this.campos.length -1 && j-2 >= 0)
@@ -419,51 +429,66 @@ var Main = new Vue({
             || this.campos[i +1][j -1] == inimigoD)
             && this.campos[i +2][j -2] == "img/fundo.png") {
             this.campos[i +2][j -2] = "img/fundoP.png";
+            stacks ++;
           }
           if ((i+2 <= this.campos.length -1 && j+2 <= this.campos.length -1)
             && (this.campos[i +1][j +1] == j2
             || this.campos[i +1][j +1] == inimigoD)
             && this.campos[i +2][j +2] == "img/fundo.png") {
             this.campos[i +2][j +2] = "img/fundoP.png";
+            stacks ++;
           }
           if ((i+1 <= this.campos.length -1 && j-1 >= 0)
             && this.campos[i +1][j -1] == "img/fundo.png") {
             this.campos[i +1][j -1] = "img/fundoP.png";
+            stacks ++;
           }
           if ((i+1 <= this.campos.length -1 && j+1 <= this.campos.length -1)
             && this.campos[i +1][j +1] == "img/fundo.png") {
             this.campos[i +1][j +1] = "img/fundoP.png";
+            stacks ++;
           }
+          if (stacks > 0) return true;
+          else return false;
         } else {
           this.clicks = 0;
           this.remover();
         }
-        return false;
       }
     },
     isPossible(i, j) {
       if (i <= this.campos.length -1 && j <= this.campos.length -1) {
         if (this.jogador == this.jg1) {
           if (this.campos[i][j] == this.jg1d) {
-            this.isPossible_down(i, j, this.jg1d, this.jg2);
-            this.isPossible_up(i, j, this.jg1d, this.jg2);
-            return true;
-          } else {
-            this.isPossible_up(i, j, this.jg1, this.jg2);
-            return true;
+            if (this.isPossible_down(i, j, this.jg1d, this.jg2) ||
+              this.isPossible_up(i, j, this.jg1d, this.jg2)) {
+              return true;
+            } else {
+              return false;
+            }
+          } else if (this.campos[i][j] == this.jg1) {
+            if (this.isPossible_up(i, j, this.jg1, this.jg2)) {
+              return true;
+            } else {
+              return false;
+            }
           }
-          return false;
         }
         if (this.jogador == this.jg2) {
           if (this.campos[i][j] == this.jg2d) {
-            this.isPossible_up(i, j, this.jg2d, this.jg1);
-            this.isPossible_down(i, j, this.jg2d, this.jg1);
-            return true;
-          } else {
-            this.isPossible_down(i, j, this.jg2, this.jg1);
-            return true;
+            if (this.isPossible_up(i, j, this.jg2d, this.jg1) ||
+              this.isPossible_down(i, j, this.jg2d, this.jg1)) {
+              return true;
+            } else {
+              return false;
+            }
+          } else if (this.campos[i][j] == this.jg2) {
+            if (this.isPossible_down(i, j, this.jg2, this.jg1)) {
+              return true;
+            } else {
+              return false;
+            }
           }
-          return false;
         }
       }
     },
@@ -637,7 +662,7 @@ var Main = new Vue({
           && this.jg2d != this.campos[i][j]
           && "img/fundoP.png" != this.campos[i][j]) {
           this.clicks = 0;
-        } else {
+        } else if (this.isPossible(i, j)) {
           this.isPossible(i, j);
         }
       }
@@ -648,22 +673,62 @@ var Main = new Vue({
       this.clicks = 0;
       this.refresh();
     },
+    empate() {
+      console.log("KK");
+      if (this.pontosJogador1 == 11 || this.pontosJogador2 == 11) {
+        for (var i = 0; i < this.campos.length; i++) {
+          for (var j = 0; j < this.campos[i].length; j++) {
+            var x = this.wXh == 8 ? 11 : 19;
+            var player = this.pontosJogador1 == x ? 1 : 2;
+            var vencedor = this.jogador == this.jg1 ? this.jg2 : this.jg1;
+            if (player == 1) {
+              if (this.campos[i][j] == this.jg1) {
+                if (!this.isPossible(i, j)) {
+                  this.winner = vencedor;
+                  console.log("EMpate", vencedor);
+                  break;
+                }
+              }
+            }
+            if (player == 2) {
+              if (this.campos[i][j] == this.jg2) {
+                if (!this.isPossible(i, j)) {
+                  console.log("EMpate", vencedor);
+                  this.winner = vencedor;
+                  break;
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     changePlayer(){
+      this.empate();
       if (this.jogador == this.jg1) {
         this.jogador = this.jg2;
       } else {
         this.jogador = this.jg1;
       }
+      this.empate();
       this.won();
-      this.update();
+      this.update(0);
       this.refresh();
     },
     refresh() {
       this.campos.push([]);
       this.campos.splice(this.campos.length-1, 1);
     },
-    update() {
+    update(empate) {
       this.remover();
+      console.log(empate);
+      if (empate == 1) {
+        if (this.winner == null) {
+          this.winner = this.jogador == this.jg1 ? this.jg2 : this.jg1;
+        } else {
+          this.winner = -1;
+        }
+      }
       const me = this;
       $.ajax({
         url: "../backend/insertInto.php",
@@ -678,6 +743,7 @@ var Main = new Vue({
           winner: this.winner,
           userName: this.userName,
           active: this.active,
+          empate: empate,
         },
         success(data) {
         },
@@ -772,13 +838,17 @@ var Main = new Vue({
       if (this.pontosJogador1 == qtdPoints) {
         this.winner = this.jg1;
         this.winner_id = this.userId;
-        this.update();
+        this.update(0);
         this.refresh();
         return true;
       } else if (this.pontosJogador2 == qtdPoints) {
         this.winner = this.jg2;
         this.winner_id = this.userId;
-        this.update();
+        this.update(0);
+        this.refresh();
+        return true;
+      } else if (this.winner == -1) {
+        this.update(1);
         this.refresh();
         return true;
       }
