@@ -23,21 +23,30 @@ var Main = new Vue({
     jg1d: 'img/dama.png',
     jg2d: 'img/dama2.png',
     jogador: this.jg1,
+    exists: false,
   },
   methods: {
     getIndex(i, j) {
       this.indexClick = [i, j];
-      if (!this.won() && this.existsPlayer2 && !this.guest && (this.isPossible(i, j) || this.clicks == 1)) {
-        if (this.owner && this.jogador == this.jg1) {
-          this.clicks ++;
-          this.main();
-          this.refresh();
-        } else if (!this.owner && this.jogador == this.jg2) {
-          this.clicks ++;
-          this.main();
-          this.refresh();
+      if ((this.jogador == this.jg1 && this.owner) || (this.jogador == this.jg2 && !this.owner)) {
+        if (!this.won() && this.existsPlayer2 && !this.guest && (this.isPossible(i, j) || this.clicks == 1)) {
+          if (this.owner && this.jogador == this.jg1) {
+            this.clicks ++;
+            this.main();
+            this.refresh();
+          } else if (!this.owner && this.jogador == this.jg2) {
+            this.clicks ++;
+            this.main();
+            this.refresh();
+          } else {
+            this.clicks = 0;
+            this.refresh();
+          }
+        } else if (!this.isPossible(i, j)) {
+          this.clicks = 0;
+          this.remover();
         }
-      } else if (!this.isPossible(i, j)) {
+      } else {
         this.clicks = 0;
         this.remover();
       }
@@ -54,6 +63,7 @@ var Main = new Vue({
       var jA = this.posAnterior[1];
 
       if (this.clicks == 1) {
+        console.log("KK");
         if ((this.campos[i][j] == this.jg1 || this.campos[i][j] == this.jg1d) && this.owner) {
           this.firstClick(i, j);
         } else if ((this.campos[i][j] == this.jg2 || this.campos[i][j] == this.jg2d) && !this.owner) {
@@ -65,6 +75,7 @@ var Main = new Vue({
       }
 
       if (this.clicks == 2) {
+        console.log('KKkk');
         if (this.campos[i][j] == "img/fundoP.png") {
           //Player 1
           if (this.jogador == this.jg1) {
@@ -674,43 +685,63 @@ var Main = new Vue({
       this.refresh();
     },
     empate() {
-      console.log("KK");
-      if (this.pontosJogador1 == 11 || this.pontosJogador2 == 11) {
+      console.log("empate");
+      var d1 = 0;
+      var d2 = 0;
+      var p1 = 0;
+      var p2 = 0;
+      if (this.pontosJogador1 == 10 || this.pontosJogador2 == 10) {
         for (var i = 0; i < this.campos.length; i++) {
           for (var j = 0; j < this.campos[i].length; j++) {
             var x = this.wXh == 8 ? 11 : 19;
             var player = this.pontosJogador1 == x ? 1 : 2;
-            var vencedor = this.jogador == this.jg1 ? this.jg2 : this.jg1;
+            if (this.campos[i][j] == this.jg1d) {
+              d1 ++;
+            }
+            if (this.campos[i][j] == this.jg2d) {
+              d2 ++;
+            }
             if (player == 1) {
               if (this.campos[i][j] == this.jg1) {
+                p1 ++;
                 if (!this.isPossible(i, j)) {
-                  this.winner = vencedor;
-                  console.log("EMpate", vencedor);
+                  this.winner = this.jogador;
+                  console.log("Venceu: ", this.jogador);
                   break;
                 }
               }
             }
             if (player == 2) {
               if (this.campos[i][j] == this.jg2) {
+                p2 ++;
                 if (!this.isPossible(i, j)) {
-                  console.log("EMpate", vencedor);
-                  this.winner = vencedor;
+                  console.log("Venceu: ", this.jogador);
+                  this.winner = this.jogador;
                   break;
                 }
               }
             }
           }
         }
+        if ((d1 == 2 && d2 == 2) && (p1 == 0 && p2 == 0)) {
+          //2 damas contra 2 damas
+          this.winner = -1;
+        } else if (((d1 == 2 && d2 == 1) && (p1 == 0 && p2 == 0)) || ((d1 == 1 && d2 == 2) && (p1 == 0 && p2 == 0))) {
+          //2 damas contra 1 dama
+          this.winner = -1;
+        } else if ((d1 == 2 && d2 == 1 && p2 == 1 && p1 == 0) || (d2 == 2 && d1 == 1 && p1 == 1 && p2 == 0)) {
+          //2 damas contra 1 dama e 1 pedra
+          this.winner = -1;
+        }
       }
     },
-    changePlayer(){
+    changePlayer() {
       this.empate();
       if (this.jogador == this.jg1) {
         this.jogador = this.jg2;
       } else {
         this.jogador = this.jg1;
       }
-      this.empate();
       this.won();
       this.update(0);
       this.refresh();
@@ -722,13 +753,6 @@ var Main = new Vue({
     update(empate) {
       this.remover();
       console.log(empate);
-      if (empate == 1) {
-        if (this.winner == null) {
-          this.winner = this.jogador == this.jg1 ? this.jg2 : this.jg1;
-        } else {
-          this.winner = -1;
-        }
-      }
       const me = this;
       $.ajax({
         url: "../backend/insertInto.php",
@@ -781,7 +805,7 @@ var Main = new Vue({
             }
             setTimeout(function () {
               me.ping();
-            }, 100);
+            }, 200);
           },
           error(args) {
             console.error(args);
@@ -814,6 +838,7 @@ var Main = new Vue({
           active: this.active,
         },
         success(data) {
+          me.exists = true;
           me.campos = JSON.parse(data[0][2]);
           me.jogador = data[0][3];
           me.winner_id = data[0][11];
@@ -827,6 +852,7 @@ var Main = new Vue({
         },
         error(args) {
           console.error(args);
+          me.exists = false;
         }
       });
     },
@@ -835,7 +861,11 @@ var Main = new Vue({
       if (this.wXh == 10) {
         qtdPoints = 20;
       }
-      if (this.pontosJogador1 == qtdPoints) {
+      if (this.winner == -1) {
+        this.update(1);
+        this.refresh();
+        return true;
+      } else if (this.pontosJogador1 == qtdPoints) {
         this.winner = this.jg1;
         this.winner_id = this.userId;
         this.update(0);
@@ -847,13 +877,9 @@ var Main = new Vue({
         this.update(0);
         this.refresh();
         return true;
-      } else if (this.winner == -1) {
-        this.update(1);
-        this.refresh();
-        return true;
       }
-      return false;
       this.refresh();
+      return false;
     }
   },
   created() {

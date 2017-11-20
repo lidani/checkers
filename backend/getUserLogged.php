@@ -17,6 +17,10 @@
     die("Error: (" . $mysqli->errno . ") " . $mysqli->error);
   }
   $result = $query->fetch_all();
-  echo json_encode($result);
+  if (count($result > 0)) {
+    echo json_encode($result);
+  } else {
+    die("Usuário não encontrado.");
+  }
 
 ?>

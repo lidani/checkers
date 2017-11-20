@@ -25,8 +25,7 @@
           method: "POST",
           dataType: "json",
           success(data) {
-            toastr.success(data);
-            setTimeout(function() { location.assign("login.php"); }, 500);
+            location.assign("login.php");
           },
           error(args) {
             toastr.error(args.responseText);

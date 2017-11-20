@@ -26,6 +26,7 @@
         `winner` = '$winner', `winner_name` = '$userName',
         `player1_points` = $jg1P, `player2_points` = $jg2P
         WHERE `id` = '$gameId'";
+
         $winner = $mysqli->query("UPDATE `users`
           SET `victories` = $victories WHERE `id` = '$userId'");
         if (!$winner) {
@@ -33,12 +34,13 @@
         }
       }
       if ($empate == 1) {
+        echo "kk";
         $query = "UPDATE `jogos`
         SET `board` = '$board', `active` = 0,
         `turn` = '$turn', `status` = 2, `player1_points` = $jg1P,
         `player2_points` = $jg2P, `winner` = -1
         WHERE `id` = '$gameId'";
-      } else {
+      } else if ($winner == null) {
         $query = "UPDATE `jogos`
         SET `board` = '$board', `active` = 1,
         `turn` = '$turn', `status` = 0,

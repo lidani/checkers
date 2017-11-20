@@ -59,6 +59,7 @@
 					},
 					error(args) {
 						console.error(args);
+						toastr.error(args.responseText);
 					}
 				});
 			},

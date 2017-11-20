@@ -4,7 +4,7 @@
 ?>
 
 <div class="row" id="register">
-	<h4>Faça seu cadastro</h4>
+	<h4 class="center">Faça seu cadastro</h4>
 	<div class="col s12 m4 l2">
 	</div>
 	<div class="col s12 m4 l8">
@@ -68,8 +68,7 @@
 							nickname: this.nickname,
 						},
 						success(data) {
-							toastr.success(data);
-							setTimeout(function() { location.assign("login.php"); }, 500);
+							location.assign("login.php");
 						},
 						error(args) {
 							console.error(args);

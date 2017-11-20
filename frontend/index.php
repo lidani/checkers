@@ -16,15 +16,19 @@
 
   <div id="addFriend" class="modal">
     <div class="modal-content">
+    <form v-on:submit="search($event)">
       <div class="input-field">
         <input type="text" v-model="nameOfFriend" id="nameOfFriend" required/>
         <label id="lbl" for="nameOfFriend">Nome completo ou apelido do amigo</label>
       </div>
       <div class="input-field">
-        <a href="#" class="btn blue-grey darken-2" v-on:click="search($event)">Pesquisar</a>
+        <input type="submit" class="btn blue-grey darken-2" value="Pesquisar"/>
       </div>
-      <div v-if="query != null" class="">
-        <table v-if="query.length > 0">
+    </form>
+
+    <div v-if="query.length > 0" class="">
+      <br><hr><br>
+        <table>
           <thead>
             <tr>
               <th>Nome</th>
@@ -38,9 +42,12 @@
             </tr>
           </tbody>
         </table>
+        <br><hr>
       </div>
-      <div v-else class="">
+      <div v-else-if="isSearch">
+        <br><hr><br>
         <h5>Nenhum registro encontrado</h5>
+        <br><hr>
       </div>
     </div>
   </div>
@@ -66,9 +73,10 @@
       user: [],
       friends: [],
       nameOfFriend: '',
-      query: '',
+      query: [],
       id: null,
       name: null,
+      isSearch: false,
     },
     mounted() {
       const me = this;
@@ -90,6 +98,8 @@
     },
     methods: {
       search(event) {
+        this.query = [];
+        this.isSearch = true;
         event.preventDefault();
         const me = this;
         $.ajax({
@@ -101,10 +111,10 @@
           },
           success(data) {
             console.log(data);
-            if (data != 'Nenhum registro encontrado.') {
-              me.query = data;
+            if (data.responseText == "Nenhum registro encontrado.") {
+              me.query.push("Nenhum registro encontrado.");
             } else {
-              me.query = null;
+              me.query = data;
             }
           },
           error(args) {
@@ -124,8 +134,7 @@
             friendName: name
           },
           success(data) {
-            toastr.success(data);
-            setTimeout(function() { location.assign("index.php") }, 500);
+            location.assign("index.php");
           },
           error(args) {
             toastr.error(args.responseText);

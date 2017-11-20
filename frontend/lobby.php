@@ -161,6 +161,7 @@ var ListaDeJogos = new Vue({
           if (data[3].length > 0) {
             me.gamesFinalized = data[3][0];
           }
+          setTimeout(function() { me.listGames() }, 3000);
         },
         error(args) {
           console.error(args);
