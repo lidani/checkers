@@ -13,113 +13,131 @@
   <h4 class="center">Meus Jogos</h4><br>
   <div class="center">
     <a class="btn blue-grey darken-2" href="newGame.php">Novo Jogo</a><br><br><hr><br>
-    <a class="btn blue-grey darken-2 modal-trigger" href="#myGames">My games</a>
-    <a class="btn blue-grey darken-2 modal-trigger" href="#gamesFinalized">Jogos finalizados</a>
-    <a class="btn blue-grey darken-2 modal-trigger" href="#friendsGames">Friends</a>
-    <a class="btn blue-grey darken-2 modal-trigger" href="#friendsFinalized">Friends Finalized</a>
   </div>
-  <div class="col s12 m4 l2">
+
+  <div class="row">
+    <div class="col s12 m4 l2">
+    </div>
+    <div v-if="myGames.length > 0" class="col s12 m4 l8">
+      <h5 class="center">Meus jogos</h5>
+      <ul class="collapsible" data-collapsible="accordion">
+        <li v-for="game in myGames">
+          <div class="collapsible-header"><i class="material-icons">games</i>{{game[1]}}</div>
+          <div class="collapsible-body">
+            <span>
+              <a class="btn blue-grey darken-2" :href="`game.php?id=${game[0]}`">Entrar na partida</a><br><br>
+              <span v-if="game[5] == 0">Status: Sem ganhador</span>
+              <span v-else-if="game[5] == 1">Status: Finalizado</span>
+              <span v-else-if="game[5] == 2">Status: Empate</span>
+              <br><span>Tamanho: {{game[4]}}</span><br>
+              <span>Ativo: {{game[10]}}</span><br>
+              <span v-if="game[14] == null">Vencedor: ninguém</span>
+              <span v-else>Vencedor: {{game[14]}}</span>
+            </span>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <div class="col s12 m4 l8" v-else>
+      <h5 class="center">Você nao possui jogos criados</h5>
+    </div>
+    <div class="col s12 m4 l2">
+    </div>
   </div>
-  <div class="col s12 m4 l8">
-    <div id="myGames" class="modal">
-      <div v-if="myGames.length > 0" class="modal-content">
-        <ul class="collapsible" data-collapsible="accordion">
-          <li v-for="game in myGames">
-            <div class="collapsible-header"><i class="material-icons">games</i>{{game[1]}}</div>
-            <div class="collapsible-body">
-              <span>
-                <a class="btn blue-grey darken-2" :href="`game.php?id=${game[0]}`">Entrar na partida</a><br><br>
-                <span v-if="game[5] == 0">Status: Não finalizado</span>
-                <span v-else-if="game[5] == 1">Status: Finalizado</span>
-                <span v-else-if="game[5] == 2">Status: Empate</span>
-                <br><span>Tamanho: {{game[4]}}</span><br>
-                <span v-if="game[14] == null">Vencedor: ninguém</span>
-                <span v-else>Vencedor: {{game[14]}}</span>
-              </span>
-            </div>
-          </li>
-        </ul>
-      </div>
-      <div v-else class="modal-content">
-        <h5>Você não possui nenhum jogo criado</h5>
-      </div>
-    </div>
+  <br><hr><br>
 
-    <div id="friendsGames" class="modal">
-      <div v-if="friendsGames.length > 0" class="modal-content">
-        <ul class="collapsible" data-collapsible="accordion">
-          <li v-for="game in friendsGames">
-            <div class="collapsible-header"><i class="material-icons">games</i>{{game[1]}}</div>
-            <div class="collapsible-body">
-              <span>
-                <a class="btn blue-grey darken-2" :href="`game.php?id=${game[0]}`">Entrar na partida</a><br><br>
-                <span v-if="game[5] == 0">Status: Não finalizado</span>
-                <span v-else-if="game[5] == 1">Status: Empate</span>
-                <span v-else-if="game[5] == 2">Status: Finalizado</span>
-                <br><span>Tamanho: {{game[4]}}</span><br>
-                <span v-if="game[14] == null">Vencedor: ninguém</span>
-                <span v-else>Vencedor: {{game[14]}}</span>
-              </span>
-            </div>
-          </li>
-        </ul>
-      </div>
-      <div v-else class="modal-content">
-        <h5>Seus amigos não possuem jogos prontos para jogar</h5>
-      </div>
+  <div class="row">
+    <div class="col s12 m4 l2">
     </div>
-
-    <div id="friendsFinalized" class="modal">
-      <div v-if="gamesIAlreadyPlayed.length > 0" class="modal-content">
-        <ul class="collapsible" data-collapsible="accordion">
-          <li v-for="game in gamesIAlreadyPlayed">
-            <div class="collapsible-header"><i class="material-icons">games</i>{{game[1]}}</div>
-            <div class="collapsible-body">
-              <span>
-                <a class="btn blue-grey darken-2" :href="`game.php?id=${game[0]}`">Entrar na partida</a><br><br>
-                <span v-if="game[5] == 0">Status: Não finalizado</span>
-                <span v-else-if="game[5] == 1">Status: Empate</span>
-                <span v-else-if="game[5] == 2">Status: Finalizado</span>
-                <br><span>Tamanho: {{game[4]}}</span><br>
-                <span v-if="game[14] == null">Vencedor: ninguém</span>
-                <span v-else>Vencedor: {{game[14]}}</span>
-              </span>
-            </div>
-          </li>
-        </ul>
-      </div>
-      <div v-else class="modal-content">
-        <h5>Nenhum jogo amigo jogado anteriormente</h5>
-      </div>
+    <div v-if="friendsGames.length > 0" class="col s12 m4 l8">
+      <h5 class="center">Jogos dos amigos</h5>
+      <ul class="collapsible" data-collapsible="accordion">
+        <li v-for="game in friendsGames">
+          <div class="collapsible-header"><i class="material-icons">games</i>{{game[1]}}</div>
+          <div class="collapsible-body">
+            <span>
+              <a class="btn blue-grey darken-2" :href="`game.php?id=${game[0]}`">Entrar na partida</a><br><br>
+              <span v-if="game[5] == 0">Status: Não finalizado</span>
+              <span v-else-if="game[5] == 1">Status: Empate</span>
+              <span v-else-if="game[5] == 2">Status: Finalizado</span>
+              <br><span>Tamanho: {{game[4]}}</span><br>
+              <span>Ativo: {{game[10]}}</span><br>
+              <span v-if="game[14] == null">Vencedor: ninguém</span>
+              <span v-else>Vencedor: {{game[14]}}</span>
+            </span>
+          </div>
+        </li>
+      </ul>
     </div>
-
-    <div id="gamesFinalized" class="modal">
-      <div v-if="gamesFinalized.length > 0" class="modal-content">
-        <ul class="collapsible" data-collapsible="accordion">
-          <li v-for="game in gamesFinalized">
-            <div class="collapsible-header"><i class="material-icons">games</i>{{game[1]}}</div>
-            <div class="collapsible-body">
-              <span>
-                <a class="btn blue-grey darken-2" :href="`game.php?id=${game[0]}`">Entrar na partida</a><br><br>
-                <span v-if="game[5] == 0">Status: Não finalizado</span>
-                <span v-else-if="game[5] == 1">Status: Empate</span>
-                <span v-else-if="game[5] == 2">Status: Finalizado</span>
-                <br><span>Tamanho: {{game[4]}}</span><br>
-                <span v-if="game[14] == null">Vencedor: ninguém</span>
-                <span v-else>Vencedor: {{game[14]}}</span>
-              </span>
-            </div>
-          </li>
-        </ul>
-      </div>
-      <div v-else class="modal-content">
-        <h5>Você não possui nenhum jogo finalizado</h5>
-      </div>
+    <div class="col s12 m4 l8" v-else>
+      <h5 class="center">Nenhum amigo possui jogos criados</h5>
     </div>
-
+    <div class="col s12 m4 l2">
+    </div>
   </div>
-  <div class="col s12 m4 l2">
+  <br><hr><br>
+
+  <div class="row">
+    <div class="col s12 m4 l2">
+    </div>
+    <div v-if="gamesFinalized.length > 0" class="col s12 m4 l8">
+      <h5 class="center">Meus jogos finalizados</h5>
+      <ul class="collapsible" data-collapsible="accordion">
+        <li v-for="game in gamesFinalized">
+          <div class="collapsible-header"><i class="material-icons">games</i>{{game[1]}}</div>
+          <div class="collapsible-body">
+            <span>
+              <a class="btn blue-grey darken-2" :href="`game.php?id=${game[0]}`">Entrar na partida</a><br><br>
+              <span v-if="game[5] == 0">Status: Não finalizado</span>
+              <span v-else-if="game[5] == 1">Status: Empate</span>
+              <span v-else-if="game[5] == 2">Status: Finalizado</span>
+              <br><span>Tamanho: {{game[4]}}</span><br>
+              <span>Ativo: {{game[10]}}</span><br>
+              <span v-if="game[14] == null">Vencedor: ninguém</span>
+              <span v-else>Vencedor: {{game[14]}}</span>
+            </span>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <div class="col s12 m4 l8" v-else>
+      <h5 class="center">Você não possui jogos finalizados</h5>
+    </div>
+    <div class="col s12 m4 l2">
+    </div>
   </div>
+  <br><hr><br>
+
+  <div class="row">
+    <div class="col s12 m4 l2">
+    </div>
+    <div v-if="gamesIAlreadyPlayed.length > 0" class="col s12 m4 l8">
+      <h5 class="center">Jogos dos amigos que já joguei</h5>
+      <ul class="collapsible" data-collapsible="accordion">
+        <li v-for="game in gamesIAlreadyPlayed">
+          <div class="collapsible-header"><i class="material-icons">games</i>{{game[1]}}</div>
+          <div class="collapsible-body">
+            <span>
+              <a class="btn blue-grey darken-2" :href="`game.php?id=${game[0]}`">Entrar na partida</a><br><br>
+              <span v-if="game[5] == 0">Status: Não finalizado</span>
+              <span v-else-if="game[5] == 1">Status: Empate</span>
+              <span v-else-if="game[5] == 2">Status: Finalizado</span>
+              <br><span>Tamanho: {{game[4]}}</span><br>
+              <span>Ativo: {{game[10]}}</span><br>
+              <span v-if="game[14] == null">Vencedor: ninguém</span>
+              <span v-else>Vencedor: {{game[14]}}</span>
+            </span>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <div class="col s12 m4 l8" v-else>
+      <h5 class="center">Nenhum amigo possui jogos que você jogou</h5>
+    </div>
+    <div class="col s12 m4 l2">
+    </div>
+  </div>
+  <br><hr><br>
 </div>
 
 <?php include 'footer.php'; ?>

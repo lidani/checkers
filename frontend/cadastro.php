@@ -76,7 +76,7 @@
 						},
 					});
 				} else {
-					toastr.warn("Senhas diferentes");
+					toastr.warning("Senhas diferentes");
 				}
 			}
 		}
