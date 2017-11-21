@@ -803,9 +803,7 @@ var Main = new Vue({
                 me.starts();
               }
             }
-            setTimeout(function () {
-              me.ping();
-            }, 200);
+            setTimeout(function () { me.ping(); }, 200);
           },
           error(args) {
             console.error(args);
@@ -834,9 +832,6 @@ var Main = new Vue({
         url: "../backend/loadTable.php",
         method: "GET",
         dataType: "json",
-        data: {
-          active: this.active,
-        },
         success(data) {
           me.exists = true;
           me.campos = JSON.parse(data[0][2]);
