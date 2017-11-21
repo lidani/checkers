@@ -34,7 +34,6 @@
         }
       }
       if ($empate == 1) {
-        echo "kk";
         $query = "UPDATE `jogos`
         SET `board` = '$board', `active` = 0,
         `turn` = '$turn', `status` = 2, `player1_points` = $jg1P,
