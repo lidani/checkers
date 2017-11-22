@@ -705,9 +705,8 @@ var Main = new Vue({
               if (this.campos[i][j] == this.jg1) {
                 p1 ++;
                 if (!this.isPossible(i, j)) {
-                  this.winner = this.jogador;
+                  // this.winner = this.jogador;
                   console.log("Venceu: ", this.jogador);
-                  break;
                 }
               }
             }
@@ -715,9 +714,8 @@ var Main = new Vue({
               if (this.campos[i][j] == this.jg2) {
                 p2 ++;
                 if (!this.isPossible(i, j)) {
+                  // this.winner = this.jogador;
                   console.log("Venceu: ", this.jogador);
-                  this.winner = this.jogador;
-                  break;
                 }
               }
             }

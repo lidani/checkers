@@ -16,7 +16,7 @@
   <h5 class="blue-text" v-if="jogador == jg2 &amp;&amp; winner_id == null &amp;&amp; winner != -1">Vez do jogador Azul</h5>
     <h5 class="red-text" v-else-if="jogador == jg1 &amp;&amp; winner_id == null &amp;&amp; winner != -1">Vez do jogador Vermelho</h5>
     <div v-if="winner_id == null &amp;&amp; winner != -1" class="score">
-      <span class="red-text">{{pontosJogador1}}</span> {{clicks}} X <span class="blue-text">{{pontosJogador2}}</span>
+      <span class="red-text">{{pontosJogador1}}</span> X <span class="blue-text">{{pontosJogador2}}</span>
     </div>
     <div v-else class="score">
       <h5 v-if="winner == jg1" class="red-text">Jogador Vermelho Venceu!</h5>
@@ -40,17 +40,11 @@
         </div>
       </div>
     </div>
-  <?php } else {  ?>
-    <div class="card red lighten-2">
-      <div class="card-content">
-        <h5>Jogo não encontrado</h5>
-      </div>
-    </div>
   <?php } ?>
 </div>
 <div v-else class="card red lighten-2">
   <div class="card-content">
-    <h5>Jogo não encontrado</h5>
+    <h5 class="center">Jogo não encontrado</h5>
   </div>
 </div>
 <?php include './footerGame.php'; ?>

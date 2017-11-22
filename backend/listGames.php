@@ -26,7 +26,7 @@
     }
   }
 
-  $selectFinalized = $mysqli->query("SELECT * FROM `jogos` WHERE `player1_id` = '$userId' AND `active` = 0 AND `status` = 1");
+  $selectFinalized = $mysqli->query("SELECT * FROM `jogos` WHERE `player1_id` = '$userId' AND `active` = 0 AND `status` = 1 OR `status` = 2");
   $resultFinalized = $selectFinalized->fetch_all();
   if (!$selectFinalized) {
     die("Error: (" . $mysqli->errno . ") " . $mysqli->error);
@@ -35,7 +35,7 @@
     array_push($gamesFinalized, $resultFinalized);
   }
 
-  $selectMy = $mysqli->query("SELECT * FROM `jogos` WHERE `player1_id` = '$userId' AND `status` = 0 OR `status` = 1");
+  $selectMy = $mysqli->query("SELECT * FROM `jogos` WHERE `player1_id` = '$userId' AND `status` = 0");
   if (!$selectMy) {
     die("Error: (" . $mysqli->errno . ") " . $mysqli->error);
   }
@@ -44,13 +44,20 @@
     array_push($myGames, $result2);
   }
 
-  $selectIAlready = $mysqli->query("SELECT * FROM `jogos` WHERE `player2_id` = '$userId' AND `status` = 2");
-  if (!$selectIAlready) {
-    die("Error: (" . $mysqli->errno . ") " . $mysqli->error);
-  }
-  $result3 = $selectIAlready->fetch_all();
-  if (count($result3) > 0) {
-    array_push($gamesIAlreadyPlayed, $result3);
+  if (isset($_SESSION["friends"])) {
+    $friends = (array)$_SESSION["friends"];
+    for ($i=0; $i < count($friends[0]); $i++) {
+      $friendId = $friends[0][$i][0];
+      // echo $friendId . " " . $userId . " ";
+      $selectIAlready = $mysqli->query("SELECT * FROM `jogos` WHERE `player2_id` = '$userId' AND `player1_id` = '$friendId' AND `active` = 0 AND (`status` = 2 OR `status` = 1)");
+      if (!$selectIAlready) {
+        die("Error: (" . $mysqli->errno . ") " . $mysqli->error);
+      }
+      $result3 = $selectIAlready->fetch_all();
+      if (count($result3) > 0) {
+        array_push($gamesIAlreadyPlayed, $result3);
+      }
+    }
   }
 
   array_push($allGames, $myGames, $friendsGames, $gamesIAlreadyPlayed, $gamesFinalized);

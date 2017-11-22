@@ -45,6 +45,20 @@
         `turn` = '$turn', `status` = 0,
         `player1_points` = '$jg1P', `player2_points` = '$jg2P'
         WHERE `id` = '$gameId'";
+      } else if ($winner == "img/img.png" || $winner == "img/img2.png") {
+        echo $winner;
+        $query = "UPDATE `jogos`
+        SET `board` = '$board', `active` = 0,
+        `turn` = '$turn', `status` = 1, `winner_id` = '$winner_id',
+        `winner` = '$winner', `winner_name` = '$userName',
+        `player1_points` = $jg1P, `player2_points` = $jg2P
+        WHERE `id` = '$gameId'";
+
+        $winner = $mysqli->query("UPDATE `users`
+          SET `victories` = $victories WHERE `id` = '$userId'");
+        if (!$winner) {
+          die("Error: (" . $mysqli->errno . ") " . $mysqli->error);
+        }
       }
     }
   }

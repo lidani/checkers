@@ -58,8 +58,8 @@
             <span>
               <a class="btn blue-grey darken-2" :href="`game.php?id=${game[0]}`">Entrar na partida</a><br><br>
               <span v-if="game[5] == 0">Status: Não finalizado</span>
-              <span v-else-if="game[5] == 1">Status: Empate</span>
-              <span v-else-if="game[5] == 2">Status: Finalizado</span>
+              <span v-else-if="game[5] == 1">Status: Finalizado</span>
+              <span v-else-if="game[5] == 2">Status: Empate</span>
               <br><span>Tamanho: {{game[4]}}</span><br>
               <span>Ativo: {{game[10]}}</span><br>
               <span v-if="game[14] == null">Vencedor: ninguém</span>
@@ -89,8 +89,8 @@
             <span>
               <a class="btn blue-grey darken-2" :href="`game.php?id=${game[0]}`">Entrar na partida</a><br><br>
               <span v-if="game[5] == 0">Status: Não finalizado</span>
-              <span v-else-if="game[5] == 1">Status: Empate</span>
-              <span v-else-if="game[5] == 2">Status: Finalizado</span>
+              <span v-else-if="game[5] == 1">Status: Finalizado</span>
+              <span v-else-if="game[5] == 2">Status: Empate</span>
               <br><span>Tamanho: {{game[4]}}</span><br>
               <span>Ativo: {{game[10]}}</span><br>
               <span v-if="game[14] == null">Vencedor: ninguém</span>
@@ -120,8 +120,8 @@
             <span>
               <a class="btn blue-grey darken-2" :href="`game.php?id=${game[0]}`">Entrar na partida</a><br><br>
               <span v-if="game[5] == 0">Status: Não finalizado</span>
-              <span v-else-if="game[5] == 1">Status: Empate</span>
-              <span v-else-if="game[5] == 2">Status: Finalizado</span>
+              <span v-else-if="game[5] == 1">Status: Finalizado</span>
+              <span v-else-if="game[5] == 2">Status: Empate</span>
               <br><span>Tamanho: {{game[4]}}</span><br>
               <span>Ativo: {{game[10]}}</span><br>
               <span v-if="game[14] == null">Vencedor: ninguém</span>
@@ -145,7 +145,6 @@
 <script>
 $(document).ready(function(){
   $('.collapsible').collapsible();
-  $('.modal').modal();
 });
 var ListaDeJogos = new Vue({
   el: "#lobby",
@@ -157,6 +156,9 @@ var ListaDeJogos = new Vue({
   },
   mounted() {
     this.listGames();
+  },
+  updated() {
+    $('.collapsible').collapsible();
   },
   methods: {
     listGames() {
